@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>FTTH on Pozibl - the art of the possible</title>
+    <link>https://pozibl.com/categories/ftth/</link>
+    <description>Recent content in FTTH on Pozibl - the art of the possible</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 08 May 2024 10:32:20 -0700</lastBuildDate>
+    <atom:link href="https://pozibl.com/categories/ftth/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Large Scale Ftth Feasability</title>
+      <link>https://pozibl.com/work/large-scale-ftth-feasability/</link>
+      <pubDate>Wed, 08 May 2024 10:32:20 -0700</pubDate>
+      <guid>https://pozibl.com/work/large-scale-ftth-feasability/</guid>
+      <description>When investing in a large scale FTTH project, it is important to conduct a feasibility study to determine the potential return on investment. This involves analyzing the costs and benefits of the project, as well as assessing the market demand and competition.&#xA;Hexvarium developed a unique approach which combine financial modelling, outside plant network design, capital budgeting over time and market analysis to determine the feasibility of a large scale FTTH project.</description>
+    </item>
+    <item>
+      <title>Fiber Location Checker</title>
+      <link>https://pozibl.com/work/fiber-location-checker/</link>
+      <pubDate>Wed, 08 May 2024 10:31:47 -0700</pubDate>
+      <guid>https://pozibl.com/work/fiber-location-checker/</guid>
+      <description>Often when starting a project it can be hard to determine if there is a real market need for fiber to the home.&#xA;Many factors come into play and often an average take rate percentage is just used.&#xA;This means that the whole business case rests on build it first and they will come!.&#xA;This is a risky approach and can lead to a lot of wasted time and money.</description>
+    </item>
+  </channel>
+</rss>

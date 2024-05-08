@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Open Data on Pozibl - the art of the possible</title>
+    <link>https://pozibl.com/categories/open-data/</link>
+    <description>Recent content in Open Data on Pozibl - the art of the possible</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 08 May 2024 10:31:13 -0700</lastBuildDate>
+    <atom:link href="https://pozibl.com/categories/open-data/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Overture</title>
+      <link>https://pozibl.com/work/overture/</link>
+      <pubDate>Wed, 08 May 2024 10:31:13 -0700</pubDate>
+      <guid>https://pozibl.com/work/overture/</guid>
+      <description>Customize the public UDF to extract data from Overture Maps.&#xA;Add the option to grab data from a polygon and convert polygons to points.&#xA;Over the past year we have advised on the development of the Fused Platform.&#xA;The Fused Platform is a data platform that allows users to access data from multiple sources and combine it into a single data set. All via using Python code that is already being used by data scientists and analysts.</description>
+    </item>
+  </channel>
+</rss>

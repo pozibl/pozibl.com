@@ -13,35 +13,35 @@
       <link>https://pozibl.com/work/data-center-site-selection/</link>
       <pubDate>Wed, 08 May 2024 10:32:45 -0700</pubDate>
       <guid>https://pozibl.com/work/data-center-site-selection/</guid>
-      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+      <description>Data Center Site Selection is a tool that combines network requirements with geospatial analysis to identify the best location for a new data center. This tool takes into account factors such as network connectivity, power availability, and environmental risks to help organizations make informed decisions about where to locate their data centers. By using this tool, organizations can ensure that their data centers are located in the most optimal location to meet their specific needs.</description>
     </item>
     <item>
       <title>Large Scale Ftth Feasability</title>
       <link>https://pozibl.com/work/large-scale-ftth-feasability/</link>
       <pubDate>Wed, 08 May 2024 10:32:20 -0700</pubDate>
       <guid>https://pozibl.com/work/large-scale-ftth-feasability/</guid>
-      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+      <description>When investing in a large scale FTTH project, it is important to conduct a feasibility study to determine the potential return on investment. This involves analyzing the costs and benefits of the project, as well as assessing the market demand and competition.&#xA;Hexvarium developed a unique approach which combine financial modelling, outside plant network design, capital budgeting over time and market analysis to determine the feasibility of a large scale FTTH project.</description>
     </item>
     <item>
       <title>Fiber Location Checker</title>
       <link>https://pozibl.com/work/fiber-location-checker/</link>
       <pubDate>Wed, 08 May 2024 10:31:47 -0700</pubDate>
       <guid>https://pozibl.com/work/fiber-location-checker/</guid>
-      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+      <description>Often when starting a project it can be hard to determine if there is a real market need for fiber to the home.&#xA;Many factors come into play and often an average take rate percentage is just used.&#xA;This means that the whole business case rests on build it first and they will come!.&#xA;This is a risky approach and can lead to a lot of wasted time and money.</description>
     </item>
     <item>
       <title>Overture</title>
       <link>https://pozibl.com/work/overture/</link>
       <pubDate>Wed, 08 May 2024 10:31:13 -0700</pubDate>
       <guid>https://pozibl.com/work/overture/</guid>
-      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+      <description>Customize the public UDF to extract data from Overture Maps.&#xA;Add the option to grab data from a polygon and convert polygons to points.&#xA;Over the past year we have advised on the development of the Fused Platform.&#xA;The Fused Platform is a data platform that allows users to access data from multiple sources and combine it into a single data set. All via using Python code that is already being used by data scientists and analysts.</description>
     </item>
     <item>
       <title>Regen Ag Shade</title>
       <link>https://pozibl.com/work/regen-ag-shade/</link>
       <pubDate>Wed, 08 May 2024 10:31:00 -0700</pubDate>
       <guid>https://pozibl.com/work/regen-ag-shade/</guid>
-      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+      <description>Build a new app to use anywhere to determine the shade footprint of a new hedge or solar installation.&#xA;This app will use the Fused API to determine the shade footprint of a new hedge or solar installation. It will be able to determine the amount of shade that will be cast by the new installation and how much sunlight will be blocked. This will help people make informed decisions about where to plant hedges or install solar panels.</description>
     </item>
     <item>
       <title>USA Broadband Data</title>

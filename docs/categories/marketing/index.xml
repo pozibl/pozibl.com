@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects on Pozibl - the art of the possible</title>
-    <link>https://pozibl.com/categories/projects/</link>
-    <description>Recent content in Projects on Pozibl - the art of the possible</description>
+    <title>Marketing on Pozibl - the art of the possible</title>
+    <link>https://pozibl.com/categories/marketing/</link>
+    <description>Recent content in Marketing on Pozibl - the art of the possible</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 08 May 2024 10:31:47 -0700</lastBuildDate>
-    <atom:link href="https://pozibl.com/categories/projects/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pozibl.com/categories/marketing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Fiber Location Checker</title>
       <link>https://pozibl.com/work/fiber-location-checker/</link>
