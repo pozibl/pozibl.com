@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pages on Pozibl - the art of the possible</title>
-    <link>http://localhost:1313/pages/</link>
+    <link>https://pozibl.com:1313/pages/</link>
     <description>Recent content in Pages on Pozibl - the art of the possible</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 07 May 2024 09:30:25 -0700</lastBuildDate>
-    <atom:link href="http://localhost:1313/pages/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pozibl.com:1313/pages/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Contact</title>
-      <link>http://localhost:1313/pages/contact/</link>
+      <link>https://pozibl.com:1313/pages/contact/</link>
       <pubDate>Tue, 07 May 2024 09:30:25 -0700</pubDate>
-      <guid>http://localhost:1313/pages/contact/</guid>
+      <guid>https://pozibl.com:1313/pages/contact/</guid>
       <description> +1 (650) 885-9889 info@pozibl.com </description>
     </item>
     <item>
       <title>About</title>
-      <link>http://localhost:1313/about/</link>
+      <link>https://pozibl.com:1313/about/</link>
       <pubDate>Tue, 07 May 2024 08:37:17 -0700</pubDate>
-      <guid>http://localhost:1313/about/</guid>
+      <guid>https://pozibl.com:1313/about/</guid>
       <description>Over the last 10 years we have built solutions for the world&amp;rsquo;s largest companies and start-ups alike.&#xA;Focussing on the latest technologies and best practices, we have built a team of experts that can help you achieve your goals.&#xA;Using our expertise in AI, Machine Learning, and Big Data, we can help you build the next generation of products and services.&#xA;Showing the art of the Pozibl!&#xA;Focus Areas Agitabitur signa lympha; non lacunae, mox cum tumulis quoque triste dictis.</description>
     </item>
   </channel>
