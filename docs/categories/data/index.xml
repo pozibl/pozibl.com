@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Data on Pozibl - the art of the possible</title>
-    <link>https://pozibl.com:1313/categories/data/</link>
+    <link>https://pozibl.com/categories/data/</link>
     <description>Recent content in Data on Pozibl - the art of the possible</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 08 May 2024 10:12:53 -0700</lastBuildDate>
-    <atom:link href="https://pozibl.com:1313/categories/data/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pozibl.com/categories/data/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>USA Broadband Data</title>
-      <link>https://pozibl.com:1313/work/us-broadband-data/</link>
+      <link>https://pozibl.com/work/us-broadband-data/</link>
       <pubDate>Wed, 08 May 2024 10:12:53 -0700</pubDate>
-      <guid>https://pozibl.com:1313/work/us-broadband-data/</guid>
+      <guid>https://pozibl.com/work/us-broadband-data/</guid>
       <description>Often you want some subset of the data from the FCC BDC map.&#xA;That is a challenge. There is more than 2GB of data as each service location gets a record.&#xA;By downloading the data and grouping it we can make it more useable.&#xA;History There are many versions of this data but this uses the latest &amp;ldquo;*FibertothePremises_fixed_broadband_J23_28nov2023.csv&amp;rdquo;&#xA;https://broadbandmap.fcc.gov/data-download&#xA;There is also data going back further under Form-477.&#xA;Example Data Processing import pandas as pd import glob from shapely.</description>
     </item>
   </channel>

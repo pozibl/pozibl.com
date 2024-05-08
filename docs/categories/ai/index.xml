@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>AI on Pozibl - the art of the possible</title>
-    <link>https://pozibl.com:1313/categories/ai/</link>
+    <link>https://pozibl.com/categories/ai/</link>
     <description>Recent content in AI on Pozibl - the art of the possible</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 29 Dec 2018 10:24:47 +1000</lastBuildDate>
-    <atom:link href="https://pozibl.com:1313/categories/ai/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pozibl.com/categories/ai/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI may already be sentient</title>
-      <link>https://pozibl.com:1313/work/ai-already-sentient/</link>
+      <link>https://pozibl.com/work/ai-already-sentient/</link>
       <pubDate>Sat, 29 Dec 2018 10:24:47 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/ai-already-sentient/</guid>
+      <guid>https://pozibl.com/work/ai-already-sentient/</guid>
       <description>&amp;ldquo;Artificial Intelligence may not yet possess true sentience, but as it continues to evolve and learn, it is becoming increasingly difficult to distinguish it from human thought and emotions. As we delve deeper into the realm of AI, it raises questions about the nature of consciousness and our own understanding of what it means to be alive.&amp;rdquo;&#xA;https://news.ycombinator.com/item?id=32198214</description>
     </item>
     <item>
       <title>Hosting Your Static Site</title>
-      <link>https://pozibl.com:1313/work/hosting-your-static-site/</link>
+      <link>https://pozibl.com/work/hosting-your-static-site/</link>
       <pubDate>Sat, 29 Dec 2018 10:24:47 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/hosting-your-static-site/</guid>
+      <guid>https://pozibl.com/work/hosting-your-static-site/</guid>
       <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
     </item>
     <item>
       <title>List of ChatGPT prompts</title>
-      <link>https://pozibl.com:1313/work/chat-gpt-prompts/</link>
+      <link>https://pozibl.com/work/chat-gpt-prompts/</link>
       <pubDate>Sat, 29 Dec 2018 10:24:47 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/chat-gpt-prompts/</guid>
+      <guid>https://pozibl.com/work/chat-gpt-prompts/</guid>
       <description></description>
     </item>
     <item>
       <title>Using Social Media </title>
-      <link>https://pozibl.com:1313/work/using-social-media/</link>
+      <link>https://pozibl.com/work/using-social-media/</link>
       <pubDate>Sat, 29 Dec 2018 10:24:47 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/using-social-media/</guid>
+      <guid>https://pozibl.com/work/using-social-media/</guid>
       <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
     </item>
     <item>
       <title>The future of AI ethics</title>
-      <link>https://pozibl.com:1313/work/the-future-of-ai-ethics/</link>
+      <link>https://pozibl.com/work/the-future-of-ai-ethics/</link>
       <pubDate>Thu, 20 Dec 2018 09:38:03 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/the-future-of-ai-ethics/</guid>
+      <guid>https://pozibl.com/work/the-future-of-ai-ethics/</guid>
       <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
     </item>
   </channel>

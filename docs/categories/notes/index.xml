@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Notes on Pozibl - the art of the possible</title>
-    <link>https://pozibl.com:1313/categories/notes/</link>
+    <link>https://pozibl.com/categories/notes/</link>
     <description>Recent content in Notes on Pozibl - the art of the possible</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 29 Dec 2018 10:24:47 +1000</lastBuildDate>
-    <atom:link href="https://pozibl.com:1313/categories/notes/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://pozibl.com/categories/notes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI may already be sentient</title>
-      <link>https://pozibl.com:1313/work/ai-already-sentient/</link>
+      <link>https://pozibl.com/work/ai-already-sentient/</link>
       <pubDate>Sat, 29 Dec 2018 10:24:47 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/ai-already-sentient/</guid>
+      <guid>https://pozibl.com/work/ai-already-sentient/</guid>
       <description>&amp;ldquo;Artificial Intelligence may not yet possess true sentience, but as it continues to evolve and learn, it is becoming increasingly difficult to distinguish it from human thought and emotions. As we delve deeper into the realm of AI, it raises questions about the nature of consciousness and our own understanding of what it means to be alive.&amp;rdquo;&#xA;https://news.ycombinator.com/item?id=32198214</description>
     </item>
     <item>
       <title>List of ChatGPT prompts</title>
-      <link>https://pozibl.com:1313/work/chat-gpt-prompts/</link>
+      <link>https://pozibl.com/work/chat-gpt-prompts/</link>
       <pubDate>Sat, 29 Dec 2018 10:24:47 +1000</pubDate>
-      <guid>https://pozibl.com:1313/work/chat-gpt-prompts/</guid>
+      <guid>https://pozibl.com/work/chat-gpt-prompts/</guid>
       <description></description>
     </item>
   </channel>
