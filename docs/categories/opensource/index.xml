@@ -43,19 +43,5 @@
       <guid>https://pozibl.com/work/regen-ag-shade/</guid>
       <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
     </item>
-    <item>
-      <title>Hugo Serif theme</title>
-      <link>https://pozibl.com/work/zerostatic-hugo-serif/</link>
-      <pubDate>Sat, 29 Dec 2018 10:26:40 +1000</pubDate>
-      <guid>https://pozibl.com/work/zerostatic-hugo-serif/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Hugo Winston theme</title>
-      <link>https://pozibl.com/work/zerostatic-hugo-winston/</link>
-      <pubDate>Sat, 29 Dec 2018 10:26:40 +1000</pubDate>
-      <guid>https://pozibl.com/work/zerostatic-hugo-winston/</guid>
-      <description>I built this theme which is a unique and modern website design created for authors and writers. As the author of this theme, I aimed to provide a clean and minimalistic look that highlights the content, making it the center of attention.&#xA;Project structure . ├── assets │ ├── js │ │ └── scripts.js │ └── scss │ ├── _author.scss │ ├── _breakpoints.scss │ ├── _content.scss │ ├── _footer.scss │ ├── _header.</description>
-    </item>
   </channel>
 </rss>
