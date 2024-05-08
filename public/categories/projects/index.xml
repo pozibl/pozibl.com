@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Projects on Pozibl - the art of the possible</title>
+    <link>http://localhost:1313/categories/projects/</link>
+    <description>Recent content in Projects on Pozibl - the art of the possible</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 08 May 2024 10:32:45 -0700</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/projects/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Data Center Site Selection</title>
+      <link>http://localhost:1313/work/data-center-site-selection/</link>
+      <pubDate>Wed, 08 May 2024 10:32:45 -0700</pubDate>
+      <guid>http://localhost:1313/work/data-center-site-selection/</guid>
+      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+    </item>
+    <item>
+      <title>Large Scale Ftth Feasability</title>
+      <link>http://localhost:1313/work/large-scale-ftth-feasability/</link>
+      <pubDate>Wed, 08 May 2024 10:32:20 -0700</pubDate>
+      <guid>http://localhost:1313/work/large-scale-ftth-feasability/</guid>
+      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+    </item>
+    <item>
+      <title>Fiber Location Checker</title>
+      <link>http://localhost:1313/work/fiber-location-checker/</link>
+      <pubDate>Wed, 08 May 2024 10:31:47 -0700</pubDate>
+      <guid>http://localhost:1313/work/fiber-location-checker/</guid>
+      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+    </item>
+    <item>
+      <title>Overture</title>
+      <link>http://localhost:1313/work/overture/</link>
+      <pubDate>Wed, 08 May 2024 10:31:13 -0700</pubDate>
+      <guid>http://localhost:1313/work/overture/</guid>
+      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+    </item>
+    <item>
+      <title>Regen Ag Shade</title>
+      <link>http://localhost:1313/work/regen-ag-shade/</link>
+      <pubDate>Wed, 08 May 2024 10:31:00 -0700</pubDate>
+      <guid>http://localhost:1313/work/regen-ag-shade/</guid>
+      <description>Markdown is a lightweight markup language with plain-text-formatting syntax. Its design allows it to be converted to many output formats, but the original tool by the same name only supports HTML. Markdown is often used to format readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.&#xA;Since the initial description of Markdown contained ambiguities and unanswered questions, the implementations that appeared over the years have subtle differences and many come with syntax extensions.</description>
+    </item>
+    <item>
+      <title>Hugo Winston theme</title>
+      <link>http://localhost:1313/work/zerostatic-hugo-winston/</link>
+      <pubDate>Sat, 29 Dec 2018 10:26:40 +1000</pubDate>
+      <guid>http://localhost:1313/work/zerostatic-hugo-winston/</guid>
+      <description>I built this theme which is a unique and modern website design created for authors and writers. As the author of this theme, I aimed to provide a clean and minimalistic look that highlights the content, making it the center of attention.&#xA;Project structure . ├── assets │ ├── js │ │ └── scripts.js │ └── scss │ ├── _author.scss │ ├── _breakpoints.scss │ ├── _content.scss │ ├── _footer.scss │ ├── _header.</description>
+    </item>
+  </channel>
+</rss>

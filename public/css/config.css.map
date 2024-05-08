@@ -1,0 +1,13 @@
+{
+	"version": 3,
+	"file": "config.css",
+	"sourceRoot": "/Users/fkauker/code/pozibl",
+	"sources": [
+		"themes/lever/assets/scss/config.scss"
+	],
+	"sourcesContent": [
+		":root {\n  --font-family-base: Inter, sans-serif;\n  --font-family-heading: Inter, sans-serif;\n  --font-family-monospace: Space Mono, monospace;\n  --font-family-logo: Inter, sans-serif;\n\n  --color-primary-bg: #46e385;\n  --color-primary-bg-2: #55f884;\n  --color-primary-bg-3: #46e385;\n  --color-primary-text: #114c29;\n  --color-base-bg: #ffffff;\n  --color-base-bg-2: #fcfcfc;\n  --color-base-bg-3: #f2f2f2;\n  --color-base-text: #2f2e2a;\n  --color-base-text-2: #535247;\n  --color-header-text:  #111827;\n  \n  --logo-text-font-size: 28px;\n  --logo-text-font-weight: 500;\n  --header-height: 60px;\n\n  --menu-font-family: Inter, sans-serif;\n  --menu-font-size: <no value>;\n  --menu-text-transform: \"Capitalize\";\n  --menu-font-weight: 400;\n\n  --section-padding: 80px;\n  --card-border-radius: 6px;\n  --button-border-radius: 4px;\n  --card-box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;\n}\n\nhtml[data-bs-theme='dark'] {\n  --color-primary-bg: #46e385;\n  --color-primary-bg-2: #55f884;\n  --color-primary-bg-3: #46e385;\n  --color-primary-text: #114c29;\n  --color-base-bg: #0b0b0b;\n  --color-base-bg-2: #212123;\n  --color-base-bg-3: #7e7e82;\n  --color-base-text: #ffffff;\n  --color-base-text-2: #bfc1c2;\n  --color-logo-text: #ffffff;\n  --color-header-text:  #F4F4F5;\n}\n\n"
+	],
+	"names": [],
+	"mappings": "CAAC,AAAD,IAAK,CAAC;EACJ,kBAAkB,CAAA,kBAAC;EACnB,qBAAqB,CAAA,kBAAC;EACtB,uBAAuB,CAAA,sBAAC;EACxB,kBAAkB,CAAA,kBAAC;EAEnB,kBAAkB,CAAA,QAAC;EACnB,oBAAoB,CAAA,QAAC;EACrB,oBAAoB,CAAA,QAAC;EACrB,oBAAoB,CAAA,QAAC;EACrB,eAAe,CAAA,QAAC;EAChB,iBAAiB,CAAA,QAAC;EAClB,iBAAiB,CAAA,QAAC;EAClB,iBAAiB,CAAA,QAAC;EAClB,mBAAmB,CAAA,QAAC;EACpB,mBAAmB,CAAA,SAAC;EAEpB,qBAAqB,CAAA,KAAC;EACtB,uBAAuB,CAAA,IAAC;EACxB,eAAe,CAAA,KAAC;EAEhB,kBAAkB,CAAA,kBAAC;EACnB,gBAAgB,CAAA,WAAC;EACjB,qBAAqB,CAAA,aAAC;EACtB,kBAAkB,CAAA,IAAC;EAEnB,iBAAiB,CAAA,KAAC;EAClB,oBAAoB,CAAA,IAAC;EACrB,sBAAsB,CAAA,IAAC;EACvB,iBAAiB,CAAA,4EAAC,GACnB;;AAED,AAAA,IAAI,CAAA,AAAA,aAAC,CAAc,MAAM,AAApB,EAAsB;EACzB,kBAAkB,CAAA,QAAC;EACnB,oBAAoB,CAAA,QAAC;EACrB,oBAAoB,CAAA,QAAC;EACrB,oBAAoB,CAAA,QAAC;EACrB,eAAe,CAAA,QAAC;EAChB,iBAAiB,CAAA,QAAC;EAClB,iBAAiB,CAAA,QAAC;EAClB,iBAAiB,CAAA,QAAC;EAClB,mBAAmB,CAAA,QAAC;EACpB,iBAAiB,CAAA,QAAC;EAClB,mBAAmB,CAAA,SAAC,GACrB"
+}

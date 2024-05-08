@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Pozibl - the art of the possible</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on Pozibl - the art of the possible</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 08 May 2024 10:32:45 -0700</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Github</title>
+      <link>http://localhost:1313/categories/github/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/github/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Opensource</title>
+      <link>http://localhost:1313/categories/opensource/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/opensource/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Projects</title>
+      <link>http://localhost:1313/categories/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/projects/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Data</title>
+      <link>http://localhost:1313/categories/data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/data/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>FCC</title>
+      <link>http://localhost:1313/categories/fcc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/fcc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Maps</title>
+      <link>http://localhost:1313/categories/maps/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/maps/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>USA</title>
+      <link>http://localhost:1313/categories/usa/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/usa/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Case Study</title>
+      <link>http://localhost:1313/categories/case-study/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/case-study/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>UI</title>
+      <link>http://localhost:1313/categories/ui/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/ui/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>AI</title>
+      <link>http://localhost:1313/categories/ai/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Articles</title>
+      <link>http://localhost:1313/categories/articles/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/articles/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Conference Talks</title>
+      <link>http://localhost:1313/categories/conference-talks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/conference-talks/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Design</title>
+      <link>http://localhost:1313/categories/design/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/design/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Notes</title>
+      <link>http://localhost:1313/categories/notes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/notes/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Portfolio</title>
+      <link>http://localhost:1313/categories/portfolio/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/portfolio/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>TedX</title>
+      <link>http://localhost:1313/categories/tedx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/tedx/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ethics</title>
+      <link>http://localhost:1313/categories/ethics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/ethics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Postcast</title>
+      <link>http://localhost:1313/categories/postcast/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/postcast/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
