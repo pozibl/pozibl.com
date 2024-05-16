@@ -2,13 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://pozibl.com/categories/ai/</loc>
+    <lastmod>2024-05-08T10:32:45-07:00</lastmod>
+  </url><url>
     <loc>https://pozibl.com/categories/</loc>
     <lastmod>2024-05-08T10:32:45-07:00</lastmod>
   </url><url>
-    <loc>https://pozibl.com/categories/coming-soon/</loc>
+    <loc>https://pozibl.com/categories/data-center/</loc>
     <lastmod>2024-05-08T10:32:45-07:00</lastmod>
   </url><url>
     <loc>https://pozibl.com/work/data-center-site-selection/</loc>
+    <lastmod>2024-05-08T10:32:45-07:00</lastmod>
+  </url><url>
+    <loc>https://pozibl.com/categories/fused/</loc>
+    <lastmod>2024-05-08T10:32:45-07:00</lastmod>
+  </url><url>
+    <loc>https://pozibl.com/categories/h3/</loc>
+    <lastmod>2024-05-08T10:32:45-07:00</lastmod>
+  </url><url>
+    <loc>https://pozibl.com/categories/highs/</loc>
+    <lastmod>2024-05-08T10:32:45-07:00</lastmod>
+  </url><url>
+    <loc>https://pozibl.com/categories/hpc/</loc>
+    <lastmod>2024-05-08T10:32:45-07:00</lastmod>
+  </url><url>
+    <loc>https://pozibl.com/categories/python/</loc>
     <lastmod>2024-05-08T10:32:45-07:00</lastmod>
   </url><url>
     <loc>https://pozibl.com/categories/broadband/</loc>
@@ -31,9 +49,6 @@
   </url><url>
     <loc>https://pozibl.com/categories/projects/</loc>
     <lastmod>2024-05-08T10:31:47-07:00</lastmod>
-  </url><url>
-    <loc>https://pozibl.com/categories/fused/</loc>
-    <lastmod>2024-05-08T10:31:13-07:00</lastmod>
   </url><url>
     <loc>https://pozibl.com/categories/github/</loc>
     <lastmod>2024-05-08T10:31:13-07:00</lastmod>

@@ -9,10 +9,52 @@
     <lastBuildDate>Wed, 08 May 2024 10:32:45 -0700</lastBuildDate>
     <atom:link href="https://pozibl.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Coming Soon</title>
-      <link>https://pozibl.com/categories/coming-soon/</link>
+      <title>AI</title>
+      <link>https://pozibl.com/categories/ai/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://pozibl.com/categories/coming-soon/</guid>
+      <guid>https://pozibl.com/categories/ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Data Center</title>
+      <link>https://pozibl.com/categories/data-center/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://pozibl.com/categories/data-center/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fused</title>
+      <link>https://pozibl.com/categories/fused/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://pozibl.com/categories/fused/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>H3</title>
+      <link>https://pozibl.com/categories/h3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://pozibl.com/categories/h3/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>HiGHS</title>
+      <link>https://pozibl.com/categories/highs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://pozibl.com/categories/highs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>HPC</title>
+      <link>https://pozibl.com/categories/hpc/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://pozibl.com/categories/hpc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://pozibl.com/categories/python/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://pozibl.com/categories/python/</guid>
       <description></description>
     </item>
     <item>
@@ -48,13 +90,6 @@
       <link>https://pozibl.com/categories/projects/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://pozibl.com/categories/projects/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Fused</title>
-      <link>https://pozibl.com/categories/fused/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://pozibl.com/categories/fused/</guid>
       <description></description>
     </item>
     <item>

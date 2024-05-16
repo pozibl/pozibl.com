@@ -49,6 +49,20 @@
 
 
     
+    
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
+      inlineMath: [['\\(', '\\)']]                  
+    }
+  };
+</script>
+
+
+  
+
 </head>
 
 <body class='page page-default-single'>
@@ -277,7 +291,19 @@
                     
                     <div class="summary-categories">
                         
-                            <a class="summary-category" href="/categories/coming-soon">Coming Soon</a>
+                            <a class="summary-category" href="/categories/h3">H3</a>
+                        
+                            <a class="summary-category" href="/categories/fused">Fused</a>
+                        
+                            <a class="summary-category" href="/categories/highs">HiGHS</a>
+                        
+                            <a class="summary-category" href="/categories/python">Python</a>
+                        
+                            <a class="summary-category" href="/categories/ai">AI</a>
+                        
+                            <a class="summary-category" href="/categories/data-center">Data Center</a>
+                        
+                            <a class="summary-category" href="/categories/hpc">HPC</a>
                         
                     </div>
                     
@@ -293,6 +319,175 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8">
                     <div class="content"><p>Data Center Site Selection is a tool that combines network requirements with geospatial analysis to identify the best location for a new data center. This tool takes into account factors such as network connectivity, power availability, and environmental risks to help organizations make informed decisions about where to locate their data centers. By using this tool, organizations can ensure that their data centers are located in the most optimal location to meet their specific needs.</p>
+<p>Companies need a integrated planning solution that lets them consider scenarios of expansion. Specifically with regard to the planned billions in spending for GPUs. This is where the Data Center Site Selection tool comes in. It allows companies to consider the impact of network connectivity, power availability, and environmental risks on their data center location decisions. By using this tool, companies can make informed decisions about where to locate their data centers to meet their specific needs.</p>
+<iframe src="../../data-center.html" width="800" height="600" frameborder="0"></iframe>
+<h3 id="lets-build-it">Let&rsquo;s build it!</h3>
+<p>We can seperate the method to build this solution into a few main categories:</p>
+<ol>
+<li>Data Sourcing</li>
+<li>Data Processing</li>
+<li>Graph Creation</li>
+<li>Model Formulation</li>
+<li>Vizualization</li>
+</ol>
+<p>Each of these typically requires specialized knowledge and tools. However, with the help of open source libraries and cloud computing, we can build this solution with relative ease.</p>
+<h4 id="data-sourcing">Data Sourcing</h4>
+<p>The first step in building this solution is to source the data. This includes data on network connectivity, power availability, and environmental risks. There are many sources for this type of data, including government agencies, private companies, and open data repositories. Some examples of data sources include:</p>
+<ul>
+<li><a href="https://www.openstreetmap.org/">OpenStreetMap</a> for geospatial data</li>
+<li><a href="https://www.telegeography.com/">TeleGeography</a> for network connectivity data</li>
+</ul>
+<p>&hellip; and many more</p>
+<p>But for the purpose of this project, we will use the following data sources:</p>
+<ul>
+<li>The Azure US data center locations with <a href="https://learn.microsoft.com/en-us/azure/expressroute/expressroute-locations-providers">ExpressRoute</a></li>
+<li>The US Boundary Polygon from Github user <a href="https://github.com/scdoshi/us-geojson">@scdoshi</a></li>
+</ul>
+<h4 id="data-processing">Data Processing</h4>
+<p>Now we want to use some web scraping approaches to get the data and transform it into (GeoPandas)[https://geopandas.org/en/stable/].</p>
+<p>This is possible using the requests package and then also combing some regex after inspecting the raw data. Also, GeoPandas can read directly from a URL!</p>
+<p>We want to get the locations from the strings and use geocoding to get the coordinates. We can use the <a href="https://geopy.readthedocs.io/en/stable/">geopy</a> package to do this.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_lat_lon</span>(df):
+</span></span><span style="display:flex;"><span>    geolocator <span style="color:#f92672">=</span> Nominatim(user_agent<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;fused&#34;</span>)
+</span></span><span style="display:flex;"><span>    df[<span style="color:#e6db74">&#39;location&#39;</span>] <span style="color:#f92672">=</span> df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: geolocator<span style="color:#f92672">.</span>geocode(x<span style="color:#f92672">.</span>city), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#e6db74">&#39;lat&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;location&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: x<span style="color:#f92672">.</span>latitude)
+</span></span><span style="display:flex;"><span>    df[<span style="color:#e6db74">&#39;lon&#39;</span>] <span style="color:#f92672">=</span> df[<span style="color:#e6db74">&#39;location&#39;</span>]<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: x<span style="color:#f92672">.</span>longitude)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> df
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>data <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;https://raw.githubusercontent.com/MicrosoftDocs/azure-docs/88e1ce95875f10a8b634e2fc471d660963a12074/includes/expressroute-azure-regions-geopolitical-region.md&#39;</span>)
+</span></span><span style="display:flex;"><span>locations <span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">&#39;North America.*&#39;</span>, data<span style="color:#f92672">.</span>text)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;|&#39;</span>)[<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;&lt;br/&gt;&#39;</span>)
+</span></span><span style="display:flex;"><span>locations <span style="color:#f92672">=</span> set([l<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#39;2&#39;</span>, <span style="color:#e6db74">&#39;&#39;</span>) <span style="color:#66d9ef">for</span> l <span style="color:#f92672">in</span> locations])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dc_df <span style="color:#f92672">=</span> pd<span style="color:#f92672">.</span>DataFrame(locations, columns<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;city&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dc_df <span style="color:#f92672">=</span> add_lat_lon(dc_df)
+</span></span></code></pre></div><p>Then we convert everything into H3 hexagons.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_h3s</span>():
+</span></span><span style="display:flex;"><span>    usa <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>read_file(<span style="color:#e6db74">&#39;https://raw.githubusercontent.com/scdoshi/us-geojson/master/geojson/nation/US.geojson&#39;</span>)
+</span></span><span style="display:flex;"><span>    polygons <span style="color:#f92672">=</span> list(list(x<span style="color:#f92672">.</span>geoms) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> usa<span style="color:#f92672">.</span>geometry)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    polygons<span style="color:#f92672">.</span>sort(key<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> x: x<span style="color:#f92672">.</span>area)
+</span></span><span style="display:flex;"><span>    coords <span style="color:#f92672">=</span> polygons[<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>exterior<span style="color:#f92672">.</span>coords[:]
+</span></span><span style="display:flex;"><span>    coords <span style="color:#f92672">=</span> list(c[:<span style="color:#ae81ff">2</span>][::<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>] <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> coords)
+</span></span><span style="display:flex;"><span>    poly <span style="color:#f92672">=</span> h3<span style="color:#f92672">.</span>H3Poly(coords)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> set(h3<span style="color:#f92672">.</span>h3shape_to_cells(poly, res<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dc_df[<span style="color:#e6db74">&#39;h3_3&#39;</span>] <span style="color:#f92672">=</span> dc_df<span style="color:#f92672">.</span>apply(<span style="color:#66d9ef">lambda</span> x: h3<span style="color:#f92672">.</span>latlng_to_cell(x<span style="color:#f92672">.</span>lat, x<span style="color:#f92672">.</span>lon, <span style="color:#ae81ff">3</span>), axis<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>us_h3s <span style="color:#f92672">=</span> get_h3s()
+</span></span></code></pre></div><p>Now the data environment is setup we can start to build the graph. There is also the added benefit that by using H3 as the interface we can ingest any future data sets and scale the granularity of the model too.</p>
+<h4 id="graph-creation">Graph Creation</h4>
+<p>The next step is to create a graph that represents the network connectivity between the data center locations. This graph will be used to model the network connectivity between the data centers and to identify the optimal location for a new data center. We can use the <a href="https://networkx.org/">NetworkX</a> library to create and manipulate the graph.</p>
+<p>Also thinking about the kind of data structure we want when formulating the model. There are many choices but the graph library abstracts this. There are more effecient ways for large scale models like edge lists or adjanceny matrices.</p>
+<p>By taking the H3 indexes we know which cells are next to one another. We seperate out the demand locations from the data center locations and create a graph with the edges between them. Also attaching any data.</p>
+<p>Next we crete a toy graph that will let us goto the next step.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>    <span style="color:#75715e"># test_data</span>
+</span></span><span style="display:flex;"><span>    d_graph <span style="color:#f92672">=</span> nx<span style="color:#f92672">.</span>DiGraph()
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>add_edge(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">1</span>, cost<span style="color:#f92672">=</span><span style="color:#ae81ff">100.</span>)
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>add_edge(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">2</span>, cost<span style="color:#f92672">=</span><span style="color:#ae81ff">100.</span>)
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>add_edge(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">1</span>, cost<span style="color:#f92672">=</span><span style="color:#ae81ff">100.</span>)
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>add_edge(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>, cost<span style="color:#f92672">=</span><span style="color:#ae81ff">100.</span>)
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>nodes[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;cost&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">10000.</span>
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>nodes[<span style="color:#ae81ff">0</span>][<span style="color:#e6db74">&#39;capacity&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.</span>
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>nodes[<span style="color:#ae81ff">3</span>][<span style="color:#e6db74">&#39;cost&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">10000.</span>
+</span></span><span style="display:flex;"><span>    d_graph<span style="color:#f92672">.</span>nodes[<span style="color:#ae81ff">3</span>][<span style="color:#e6db74">&#39;capacity&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.</span>
+</span></span></code></pre></div><p>From this definition we can start to define the function that will create the graph from the data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create_assignment_graph</span>(edges):
+</span></span><span style="display:flex;"><span>    d_graph <span style="color:#f92672">=</span> nx<span style="color:#f92672">.</span>DiGraph()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    data_centers <span style="color:#f92672">=</span> set()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (s, e), cost <span style="color:#f92672">in</span> edges<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>        d_graph<span style="color:#f92672">.</span>add_edge(s, e, cost<span style="color:#f92672">=</span>cost)
+</span></span><span style="display:flex;"><span>        data_centers<span style="color:#f92672">.</span>add(s)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> one <span style="color:#f92672">in</span> data_centers:
+</span></span><span style="display:flex;"><span>        d_graph<span style="color:#f92672">.</span>nodes[one][<span style="color:#e6db74">&#39;cost&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">20_000</span>
+</span></span><span style="display:flex;"><span>        d_graph<span style="color:#f92672">.</span>nodes[one][<span style="color:#e6db74">&#39;capacity&#39;</span>] <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> d_graph
+</span></span></code></pre></div><p>Now the graph is created we can start to formulate the model.</p>
+<h4 id="model-formulation">Model Formulation</h4>
+<p>Using the <a href="https://pypi.org/project/highspy/">highspy</a> library we get access to one of the latest and greatest <a href="https://en.wikipedia.org/wiki/List_of_optimization_software">mathematical optimization solvers</a>. This is some great work,</p>
+<p><em>&ldquo;HiGHS is based on the high performance dual revised simplex implementation (HSOL) and its parallel variant (PAMI) developed by Qi Huangfu. Features such as presolve, crash and advanced basis start have been added by Julian Hall and Ivet Galabova. The QP solver and original language interfaces were written by Michael Feldmeier. Leona Gottwald wrote the MIP solver. The software engineering of HiGHS was developed by Ivet Galabova.</em>&quot;<a href="https://highs.dev/">ref</a></p>
+<p>We can use this to solve the model. The model is a simple assignment problem. We want to assign the demand locations to the data center locations in a way that minimizes the total cost. The cost is a combination of the network connectivity cost and the cost of building a new data center. The model can be formulated as follows:</p>
+<p>Heres some math thats probably not fully correct but looks great thanks to <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://gohugo.io/content-management/mathematics/">Hugo</a>.</p>
+\[
+\begin{array}{ll}
+\min &  \sum_{i \in C} \sum_{j \in D} c_{ij} x_{ij} + \sum_{i \in C} c_i z_i \\
+\text{s.t.} & \sum_{j \in C} x_{ij} = 1 \quad \forall j \in D \\
+& \sum_{j \in D} x_{ij} - p_i z_i \leq 0 \quad \forall i \in C \\
+& L \leq \sum_{i \in C} z_{i} \leq U \quad \forall i \in C \\
+& x_{ij} \in \{0, 1\} \quad \forall i \in C, j \in D \\
+& z_i \in \{0, 1\} \quad \forall i \in C \\
+\end{array}
+\]
+\[
+\begin{aligned}
+& where:
+& \text{ } \\
+& D \text{ is the set of demand locations} \\
+& C \text{ is the set of data center locations} \\
+& U \text{ is the max number data center locations} \\
+& L \text{ is the min number data center locations} \\
+& c_{ij} \text{ is the cost of connecting demand location } j \text{ to data center location } i \\
+& c_i \text{ is the cost of building a data center at location } i \\
+& p_i \text{ is the capacity of data center at location } i \\
+& x_{ij} \text{ is a binary variable that indicates whether demand location } j \text{ is assigned to data center location } i \\
+& z_i \text{ is a binary variable that indicates whether a data center is used at location } i
+\end{aligned}
+\]
+<p>Transforming this into code is relatively simple with the help of the highspy library. We can define the model as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>inf <span style="color:#f92672">=</span> highspy<span style="color:#f92672">.</span>kHighsInf
+</span></span><span style="display:flex;"><span>tasks <span style="color:#f92672">=</span> {j: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>j<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>nodes() <span style="color:#66d9ef">if</span> graph<span style="color:#f92672">.</span>out_degree[j] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>}
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>len(tasks)<span style="color:#e6db74">}</span><span style="color:#e6db74"> demand locations&#39;</span>)
+</span></span><span style="display:flex;"><span>cands <span style="color:#f92672">=</span> {i: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>nodes() <span style="color:#66d9ef">if</span> graph<span style="color:#f92672">.</span>in_degree[i] <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>}
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">{</span>len(cands)<span style="color:#e6db74">}</span><span style="color:#e6db74"> hub locations&#39;</span>)
+</span></span><span style="display:flex;"><span>edges <span style="color:#f92672">=</span> {(s, e):<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">_</span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#66d9ef">for</span> s, e <span style="color:#f92672">in</span> list(graph<span style="color:#f92672">.</span>edges())}
+</span></span><span style="display:flex;"><span>edge_assi <span style="color:#f92672">=</span> int_var_dict(h, edges, <span style="color:#e6db74">&#39;x&#39;</span>, lb<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, ub<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>c_nodes <span style="color:#f92672">=</span> int_var_dict(h, cands, <span style="color:#e6db74">&#39;z&#39;</span>, variable_index_count<span style="color:#f92672">=</span>len(edge_assi), lb<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, ub<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Creating task assignment contraints</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> tasks:
+</span></span><span style="display:flex;"><span>    h<span style="color:#f92672">.</span>addRow(
+</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, len(graph<span style="color:#f92672">.</span>in_edges(j)),
+</span></span><span style="display:flex;"><span>        np<span style="color:#f92672">.</span>array([edge_assi[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;x_</span><span style="color:#e6db74">{</span>i[<span style="color:#ae81ff">0</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">_</span><span style="color:#e6db74">{</span>j<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>in_edges(j)]),
+</span></span><span style="display:flex;"><span>        np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>in_edges(j)])
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> s, e, data <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>in_edges(j, data<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>):
+</span></span><span style="display:flex;"><span>        h<span style="color:#f92672">.</span>changeColCost(edge_assi[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;x_</span><span style="color:#e6db74">{</span>s<span style="color:#e6db74">}</span><span style="color:#e6db74">_</span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>], data[<span style="color:#e6db74">&#39;cost&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Creating idicator to push cost to use minimal amount of hubs</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> cands:
+</span></span><span style="display:flex;"><span>    h<span style="color:#f92672">.</span>addRow(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">-</span>inf, <span style="color:#ae81ff">0</span>, len(graph<span style="color:#f92672">.</span>out_edges(i)) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>        [edge_assi[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;x_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">_</span><span style="color:#e6db74">{</span>j[<span style="color:#ae81ff">1</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>] <span style="color:#66d9ef">for</span> j <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>out_edges(i)] <span style="color:#f92672">+</span> [c_nodes[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;z_</span><span style="color:#e6db74">{</span>i<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>]],
+</span></span><span style="display:flex;"><span>        [<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> graph<span style="color:#f92672">.</span>out_edges(i)] <span style="color:#f92672">+</span> [<span style="color:#f92672">-</span>graph<span style="color:#f92672">.</span>nodes[i][<span style="color:#e6db74">&#39;capacity&#39;</span>]]
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>h<span style="color:#f92672">.</span>addRow(
+</span></span><span style="display:flex;"><span>    <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, len(c_nodes),
+</span></span><span style="display:flex;"><span>    [c_nodes[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;z_</span><span style="color:#e6db74">{</span>c<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>] <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> cands], [<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> c_nodes])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> cands:
+</span></span><span style="display:flex;"><span>    h<span style="color:#f92672">.</span>changeColIntegrality(c_nodes[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;z_</span><span style="color:#e6db74">{</span>c<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>], highspy<span style="color:#f92672">.</span>HighsVarType<span style="color:#f92672">.</span>kInteger)
+</span></span><span style="display:flex;"><span>    h<span style="color:#f92672">.</span>changeColCost(c_nodes[<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;z_</span><span style="color:#e6db74">{</span>c<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>], graph<span style="color:#f92672">.</span>nodes[c][<span style="color:#e6db74">&#39;cost&#39;</span>])
+</span></span></code></pre></div><p>Now the model can be solved and we need to visualize the results. This is where the final step comes in.</p>
+<h4 id="visualization">Visualization</h4>
+<p>The final step in building this solution is to visualize the results.</p>
+<p>Actually I vizualized during the whole process of development, dynamically using <a href="https://www.fused.io/">Fused</a>.</p>
+<p>This let&rsquo;s you see the data as you code and can accelerate the dev process. It also lets you share the code and data with others.</p>
+<p>This end-to-end solution is available as a <a href="https://github.com/fusedio/udfs/tree/main/community/fhk/data_center_location_model">UDF</a>!</p>
+<p>This means you can dynamically run the code and see the results in the browser. Change a variable for cost, capacity or data source and it reevaluates in seconds!</p>
+<p>This is then integrated with Mapbox and Deck to create the visualization you saw at the top of the page.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>In conclusion, the Data Center Site Selection tool is a powerful solution that combines network requirements with geospatial analysis to help organizations make informed decisions about where to locate their data centers. By using this tool, organizations can ensure that their data centers are located in the most optimal location to meet their specific needs. With the help of open source libraries and cloud computing, this solution can be built with relative ease.</p>
+<p>The next step is to layer in business requirements and other data sources to make the model more accurate. This could include factors such as labor costs, tax incentives, and real estate prices. By incorporating these additional factors, the Data Center Site Selection tool can become an even more powerful tool for organizations looking to make data center location decisions.</p>
+<p>Contact us at <a href="mailto:info@pozibl.com">info@pozibl.com</a> to learn more about how we can help you build this solution for your organization.</p>
 </div>
                     
 
