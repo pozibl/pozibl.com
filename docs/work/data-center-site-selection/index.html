@@ -319,7 +319,9 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8">
                     <div class="content"><p>Data Center Site Selection (DCSS) is a tool that combines network requirements with geospatial analysis to identify the best location for a new data center.
-DCSS takes into account factors such as network connectivity, power availability, and environmental risks to help organizations make informed decisions about where to locate their data centers. By using DCSS, organizations ensure that their data centers are located in the optimal location to meet their specific needs.</p>
+DCSS takes into account factors such as network connectivity, power availability, and environmental risks to help organizations make informed decisions about where to locate their data centers.</p>
+<p>So, we need to decide where to build/utilize the data centers, and we want to know how much it&rsquo;s going to cost. And for that we need to know how much it costs to connect demand points to the centers. This creates a massive amount of combinations. Luckily, we can formulate this as a mathematical model, and let algorithms find the best solution for us.</p>
+<p>Thus by using DCSS, organizations ensure that their data centers are located in the optimal location to meet their specific needs.</p>
 <iframe src="../../data-center.html" width="800" height="600" frameborder="0"></iframe>
 <h3 id="lets-build-it">Let&rsquo;s build it!</h3>
 <p>We can separate the method to build this solution into a few main categories:</p>
@@ -414,7 +416,7 @@ DCSS takes into account factors such as network connectivity, power availability
 <p>Here&rsquo;s some math thats probably not fully correct but looks great thanks to <a href="https://www.mathjax.org/">MathJax</a> and <a href="https://gohugo.io/content-management/mathematics/">Hugo</a>.</p>
 \[
 \begin{array}{ll}
-\min &  \sum_{i \in C} \sum_{j \in D} c_{ij} x_{ij} + \sum_{i \in C} c_i z_i \\
+\min &  \sum_{i \in C} \sum_{j \in D} c_{ij} x_{ij} + \sum_{i \in C} o_i z_i \\
 \text{s.t.} & \sum_{j \in C} x_{ij} = 1 \quad \forall j \in D \\
 & \sum_{j \in D} x_{ij} - p_i z_i \leq 0 \quad \forall i \in C \\
 & L \leq \sum_{i \in C} z_{i} \leq U \\
@@ -431,7 +433,7 @@ DCSS takes into account factors such as network connectivity, power availability
 & U \text{ is the max number data center locations} \\
 & L \text{ is the min number data center locations} \\
 & c_{ij} \text{ is the cost of connecting demand location } j \text{ to data center location } i \\
-& c_i \text{ is the cost of building a data center at location } i \\
+& o_i \text{ is the cost of building a data center at location } i \\
 & p_i \text{ is the capacity of data center at location } i \\
 & x_{ij} \text{ is a binary variable that indicates whether demand location } j \text{ is assigned to data center location } i \\
 & z_i \text{ is a binary variable that indicates whether a data center is used at location } i
