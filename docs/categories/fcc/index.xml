@@ -6,8 +6,15 @@
     <description>Recent content in FCC on Pozibl - the art of the possible</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 08 May 2024 10:12:53 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jul 2024 09:37:00 -0700</lastBuildDate>
     <atom:link href="https://pozibl.com/categories/fcc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>FCC BDC Map</title>
+      <link>https://pozibl.com/work/fcc-bdc-map/</link>
+      <pubDate>Tue, 16 Jul 2024 09:37:00 -0700</pubDate>
+      <guid>https://pozibl.com/work/fcc-bdc-map/</guid>
+      <description>This covers my process and the idea behind getting broadband availability data as reported to the Federal Communcations Commision (FCC).&#xA;Background The most recent data was created as part of the new mapping iniative.&#xA;Now this data and process in itself is not problematic. The issue is that the data is not available in a format that is easily consumable. The data is available in a series of CSV files that are not easily consumable.</description>
+    </item>
     <item>
       <title>USA Broadband Data</title>
       <link>https://pozibl.com/work/us-broadband-data/</link>
