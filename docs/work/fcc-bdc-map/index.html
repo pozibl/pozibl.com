@@ -29,7 +29,7 @@
 
 <meta property="og:title" content="FCC BDC Map"/>
 
-<meta property="og:description" content="Build a e2e data pipeline for ~10GB of broadband data"/>
+<meta property="og:description" content="Build an e2e data pipeline for ~10GB of broadband data"/>
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:site" content="@zerostaticio"/>
@@ -37,7 +37,7 @@
     <title>FCC BDC Map</title>
 
 
-  <meta name="description" content="Build a e2e data pipeline for ~10GB of broadband data"/>
+  <meta name="description" content="Build an e2e data pipeline for ~10GB of broadband data"/>
 
 
 
@@ -273,7 +273,7 @@
                 
                     <h1>FCC BDC Map</h1>
                     <div class="summary-description">
-                        <p>Build a e2e data pipeline for ~10GB of broadband data</p>
+                        <p>Build an e2e data pipeline for ~10GB of broadband data</p>
                     </div>
 
                     
@@ -329,13 +329,13 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-8">
-                    <div class="content"><p>This covers my process and the idea behind getting broadband availability data as reported to the Federal Communcations Commision (FCC).</p>
+                    <div class="content"><p>This covers my process and the idea behind getting broadband availability data as reported to the Federal Communications Commission (FCC).</p>
 <h2 id="background">Background</h2>
-<p>The most recent data was created as part of the <a href="https://www.pewtrusts.org/en/research-and-analysis/articles/2022/11/18/what-is-the-fccs-new-broadband-map-and-why-does-it-matter">new mapping iniative</a>.</p>
-<p>Now this data and process in itself is not problematic. The issue is that the data is not available in a format that is easily consumable. The data is available in a series of CSV files that are not easily consumable. The data is also not available in a format that is easily consumable by the public.</p>
+<p>The most recent data was created as part of the <a href="https://www.pewtrusts.org/en/research-and-analysis/articles/2022/11/18/what-is-the-fccs-new-broadband-map-and-why-does-it-matter">new mapping initiative</a>.</p>
+<p>Now this data and process in itself is not problematic. The issue is that the data is not available in a format that is easily consumable. The data is available in a series of CSV files that are not easily consumable. The data is also unavailable in a format easily consumable by the public.</p>
 <p>There has been extensive discussion about the accuracy and completeness of the data. The FCC has been working to improve the data and make it more accurate and complete. The FCC has also been working to make the data more accessible to the public.</p>
 <p>But, many industry pundits and experts have been critical of the FCC&rsquo;s efforts. They argue that the data is not accurate and that the FCC is not doing enough to make the data more accessible to the public. <a href="https://potsandpansbyccg.com/2024/06/03/the-new-fcc-maps/">ref</a></p>
-<p>I&rsquo;m more shocked that there any many categories of usecases that the map and data is not quite setup for.</p>
+<p>I&rsquo;m more shocked that there are many categories of use cases that the map and data are not quite set up for.</p>
 <ul>
 <li>
 <p>&ldquo;As a member of the community I want to know how my city is doing in terms of broadband access so that I can advocate for better access for my community.&rdquo;</p>
@@ -344,40 +344,40 @@
 <p>&ldquo;As a business owner I want to know what broadband options are available in my area so that I can make informed decisions about my business.&rdquo;</p>
 </li>
 <li>
-<p>&ldquo;As a voter I want to know how effective my elected officials are in improving broadband access in my area so that I can make informed decisions at the polls.&rdquo;</p>
+<p>&ldquo;As a voter I want to know how effective my elected officials are in improving broadband access in my area so that I can make informed decisions at the voting booth.&rdquo;</p>
 </li>
 <li>
 <p>&ldquo;As a city worker I want to know which areas of my city are underserved in terms of broadband access so that I can prioritize infrastructure improvements.&rdquo;</p>
 </li>
 </ul>
 <p>and the list goes on.</p>
-<p>Now lets insert $42.45 billion&hellip;</p>
-<p>Yes, thats 42 followed by one, two, three &hellip; nine zeros&hellip; billion dollars. This is the amount of money that the FCC is spending to improve broadband access in the United States. The FCC is spending this money to improve broadband access in rural areas. The FCC is spending this money to improve broadband access in urban areas. The FCC is spending this money to improve broadband access in suburban areas. The FCC is spending this money to improve broadband access in tribal areas. The FCC is spending this money to improve broadband access in territories. The FCC is spending this money to improve broadband access in schools and libraries. The FCC is spending this money to improve broadband access in hospitals and clinics. The FCC is spending this money to improve broadband access in public safety agencies. The FCC is spending this money to improve broadband access in low-income households. The FCC is spending this money to improve broadband access in households with children. The FCC is spending this money to improve broadband access in households with seniors. The FCC is spending this money to improve broadband access in households with disabilities. The FCC is &hellip;</p>
-<p>If only there was a good map of where this money should be spent!</p>
+<p>Now let&rsquo;s insert $42.45 billion&hellip;</p>
+<p>Yes, that&rsquo;s 42 followed by one, two, three &hellip; nine zeros&hellip; billion dollars. This is the amount of money that the FCC is spending to improve broadband access in the United States. The FCC is spending this money to improve broadband access in rural areas. The FCC is spending this money to improve broadband access in urban areas. The FCC is spending this money to improve broadband access in suburban areas. The FCC is spending this money to improve broadband access in tribal areas. The FCC is spending this money to improve broadband access in territories. The FCC is spending this money to improve broadband access in schools and libraries. The FCC is spending this money to improve broadband access in hospitals and clinics. The FCC is spending this money to improve broadband access in public safety agencies. The FCC is spending this money to improve broadband access in low-income households. The FCC is spending this money to improve broadband access in households with children. The FCC is spending this money to improve broadband access in households with seniors. The FCC is spending this money to improve broadband access in households with disabilities. The FCC is &hellip;</p>
+<p>If only there were a good map of where this money should be spent!</p>
 <p>Wait a minute, hold my beer&hellip;</p>
-<p>Ok enough of the history lesson, lets get to the demo.</p>
+<p>Ok enough of the history lesson, let&rsquo;s get to the demo.</p>
 <h2 id="demo">Demo</h2>
 <h4 id="map-of-underserved-areas-red">Map of underserved areas (Red)</h4>
 <p>Instructions: The map shows two colors based on the definition of underserved. By using the menu on the bottom left you can change the definition of underserved. The map will update when you click &ldquo;Update&rdquo;.</p>
 <p>Any census block with max speed below the &ldquo;Underserved (Download/Upload):&rdquo; input will be shown in red. The default is 100/20 Mbps.</p>
 <p>It is also important to check what technologies are available. You can limit the map to only show areas that have a specific technology available. The default is the technologies in 10,11,12,20,30,40,41,42,43,50 from the <a href="https://www.fcc.gov/general/technology-codes-used-fixed-broadband-deployment-data">FCC definition</a>.</p>
-<p>Lastly you can limit the ISPs shown on the map. The default is all ISPs. But you can pick any and add their name to the &ldquo;Providers:&rdquo; input. The map will update when you click &ldquo;Update&rdquo;.</p>
+<p>Lastly, you can limit the ISPs shown on the map. The default is all ISPs. But you can pick any and add their name to the &ldquo;Providers:&rdquo; input. The map will update when you click &ldquo;Update&rdquo;.</p>
 <p>At any time you can click on a block and show the data.</p>
 <iframe src="../../fcc.html" width="800" height="800" frameborder="0" scrolling="no"></iframe>
 <h2 id="how-to">How to</h2>
-<p>The data is available in a series of CSV files that are not easily consumable. The data is also not available in a format that is easily consumable by the public.</p>
-<p>But its behind a nice API, so we can get it in a format that is easily consumable by the public. Who knows how to make API requests.</p>
+<p>The data is available in a series of CSV files that are not easily consumable. The data is also unavailable in a format easily consumable by the public.</p>
+<p>But it&rsquo;s behind a nice API, so we can get it in a format that is easily consumable by the public. Who knows how to make API requests?</p>
 <p><!-- raw HTML omitted -->Goal: Make this easier<!-- raw HTML omitted --></p>
 <p>We have the technology! We can make this easier.</p>
 <p>Now this combination of technology choices is perhaps not the most efficient, but it is the most reproducible. And that is the key to this project. We want to be able to reproduce the data and the process. We want to be able to reproduce the data and the process in a way that is easy to understand and easy to use.</p>
 <p>Oh and best of all its FREE!</p>
-<p>We are going to use Google Colab, DuckDB, Fused and Mapbox.</p>
-<p>The data will be ETL&rsquo;d from csv and ESRI Shapefile into GeoParquet.</p>
-<p>Is this the best production grade data pipeline&hellip; no, but it&rsquo;ll do.</p>
-<p>To be honest the workflow wasn&rsquo;t this clean until I had to make it reproducible and reran it a few times. But looking backwards the process can be seperated into three distinct steps.</p>
+<p>We are going to use Google Colab, DuckDB, Fused, and Mapbox.</p>
+<p>The data will be ETL&rsquo;d from CSV and ESRI Shapefile into GeoParquet.</p>
+<p>Is this the best production-grade data pipeline&hellip; no, but it&rsquo;ll do.</p>
+<p>To be honest the workflow wasn&rsquo;t this clean until I had to make it reproducible and reran it a few times. But looking backward the process can be separated into four distinct steps.</p>
 <ol>
 <li>
-<p><a href="https://colab.research.google.com/drive/1dDN1v0kXhn_Z-sVuvqQ1wDc_dkTST24r?authuser=2#scrollTo=wyKOsV9YS_Qr">Get raw data</a> - this step will vary for every project, but its good to be familiar with web scraping tools, linux command line like wget, curl, and python libraries like requests, beautifulsoup, and selenium.</p>
+<p><a href="https://colab.research.google.com/drive/1dDN1v0kXhn_Z-sVuvqQ1wDc_dkTST24r?authuser=2#scrollTo=wyKOsV9YS_Qr">Get raw data</a> - this step will vary for every project, but its good to be familiar with web scraping tools, Linux command line like wget, curl, and python libraries like requests, beautiful soup, and selenium.</p>
 </li>
 <li>
 <p><a href="https://colab.research.google.com/drive/1E0S3xn5Wtu9ZdvQMf1v9NAi_h2BQO852#scrollTo=YF_YlxDd8vWX">Process data</a> - maybe more or less involved for each data, but here we do a join to make the csv data spatial and then use the DuckDB spatial extension to create a GeoParquet file.</p>
@@ -386,12 +386,12 @@
 <p><a href="https://colab.research.google.com/drive/16zD8trsk3hpICmU4QeFXtLqtHsct1VIC#scrollTo=GxMl-gvJGMA_">Fuse data</a> - this is where we use Fused to create partitioned geoparquet that can be added to a udf</p>
 </li>
 <li>
-<p><a href="https://github.com/fusedio/udfs/tree/main/community/fhk/fcc_bdc_map_latest">Map &amp; Visualize</a> - create a udf that lets you explore the data and serve it as a url. Add that to a mapbox JS map and you have a nice one page tool (As shown in demo above).</p>
+<p><a href="https://github.com/fusedio/udfs/tree/main/community/fhk/fcc_bdc_map_latest">Map &amp; Visualize</a> - create a UDF that lets you explore the data and serve it as a URL. Add that to a Mapbox JS map and you have a nice one-page tool (As shown in the demo above).</p>
 </li>
 </ol>
 <h3 id="conclusion">Conclusion</h3>
-<p>In conclusion, it is now possible to make serverless full stack one page apps that can be shared with the world. This is a powerful tool for data scientists and data engineers. It allows them to quickly and easily create data products that can be shared with the world. This is a powerful tool for organizations looking to make data-driven decisions. It allows them to quickly and easily create data products that can be shared with the world.</p>
-<p>If you are a company or start-up looking to build a data product, we can help you. We have the expertise and experience to help you build a data product that is easy to use and easy to share with the world.</p>
+<p>In conclusion, it is now possible to make serverless full-stack one-page apps that can be shared with the world. This is a powerful tool for data scientists and data engineers. It allows them to quickly and easily create data products that can be shared with the world. Organizations looking to make data-driven decisions can rapidly go from data to app. It allows them to quickly and easily create data products that can be shared with the world.</p>
+<p>If you are a company or start-up looking to build a data or analytics product, we can help you. We have the expertise and experience to help you build easy-to-use and share applications with the world.</p>
 <p>Contact us at <a href="mailto:info@pozibl.com">info@pozibl.com</a> to learn more about how we can help you build this solution for your organization.</p>
 </div>
                     
