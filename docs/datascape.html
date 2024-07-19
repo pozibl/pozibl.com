@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/deck.gl@^9.0.14/dist.min.js"></script>
+  </head>
+  <body>
+
+    <!-- Load the `mapbox-gl-geocoder` plugin. -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+    <div id="map" style="width: 100%; height: 100vh"></div>
+    <script>
+      const { MapboxOverlay, ArcLayer, MVTLayer } = deck;
+
+      // Set your Mapbox token here or via environment variable
+      const MAPBOX_TOKEN = "pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw"; // eslint-disable-line
+
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v9',
+        projection: 'globe',
+        accessToken: MAPBOX_TOKEN,
+        center: [13, 52],
+        zoom: 3,
+        bearing: 0,
+        pitch: 30
+      });
+
+      map.on('load', () => {
+        console.log("Map loaded");
+
+        const deckOverlay = new MapboxOverlay({
+          layers: [
+            new MVTLayer({
+              id: 'grid',
+              data: 'https://www.fused.io/server/v1/realtime-shared/3926ad7e407cc90d1d686ab2b0266c9d0fe0b3118793370fcf79324d9886b840/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt',
+              layer: 'udf',
+              maxZoom: 19,
+              minZoom: 10,
+              getLineWidth: f => {
+                    return 20;
+                },
+              getLineColor: [255, 127, 0],
+              pickable: true
+            }),
+            new MVTLayer({
+              id: 'substation',
+              data: 'https://www.fused.io/server/v1/realtime-shared/92cbf5d3c777938213e653b6d6327acde7042441a85feb2352b9e4c93c2930f1/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt',
+              layer: 'udf',
+              maxZoom: 19,
+              minZoom: 10,
+              getFillColor: d => {
+                return [255, 127, 0, 255]; // Alpha set to 180
+              },
+              getPointRadius: 100,
+              pickable: true
+            }),
+            new MVTLayer({
+              id: 'fiber',
+              data: 'https://www.fused.io/server/v1/realtime-shared/89e92a90b69cd0fc12e6ae842f475ef896badeaa9dfecafd97ae80720f357c9b/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt',
+              layer: 'udf',
+              maxZoom: 19,
+              minZoom: 10,
+              getLineWidth: f => {
+                    return 20;
+                },
+              getLineColor: [152, 78, 163],
+              pickable: true
+            }),
+
+          ]
+        });
+
+        map.addControl(deckOverlay);
+        console.log("Deck overlay added");
+
+        map.addControl(new mapboxgl.NavigationControl());
+        console.log("Navigation control added");
+
+        // Add Geocoder control to the map
+        const geocoder = new MapboxGeocoder({
+          accessToken: MAPBOX_TOKEN,
+          mapboxgl: mapboxgl
+        });
+        map.addControl(geocoder, 'top-left'); // Adding geocoder to top right corner
+
+        geocoder.on('result', (event) => {
+          const coordinates = event.result.center;
+          map.flyTo({
+            center: coordinates,
+            zoom: 12
+          });
+        });
+      });
+
+      map.on('error', (e) => {
+        console.error('Mapbox error:', e.error.message);
+      });
+
+      deckOverlay.on('data', () => {
+        console.log("Data loaded");
+      });
+
+      deckOverlay.on('error', (e) => {
+        console.error('Deck error:', e);
+      });
+    </script>
+  </body>
+</html>
