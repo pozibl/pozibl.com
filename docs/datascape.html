@@ -48,6 +48,18 @@
         margin: 0;
         cursor: ew-resize;
     }
+    #features {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 20%;
+        overflow: auto;
+        background: rgba(255, 255, 255, 0.8);
+    }
+    #map canvas {
+        cursor: crosshair;
+    }
 
     </style>
 
@@ -59,15 +71,15 @@
     <div class="map-overlay top">
     <div class="map-overlay-inner">
         Gewichtung
-        <label>Umspannwerk: <span id="slider-value">100%</span></label>
-        <input id="slider" type="range" min="0" max="100" step="10" value="100">
-        <label>Stromnetz: <span id="slider-value">0%</span></label>
-        <input id="power-slider" type="range" min="0" max="100" step="0" value="0">
-        <label>Glasfaser: <span id="slider-value">0%</span></label>
-        <input id="power-slider" type="range" min="0" max="100" step="0" value="0">
+        <label>Umspannwerk: <span id="sub-value">100%</span></label>
+        <input id="sub-slider" type="range" min="0" max="100" step="10" value="100">
+        <label>Stromnetz: <span id="grid-value">0%</span></label>
+        <input id="grid-slider" type="range" min="0" max="100" step="0" value="100">
+        <label>Glasfaser: <span id="fiber-value">0%</span></label>
+        <input id="fiber-slider" type="range" min="0" max="100" step="0" value="100">
     </div>
     </div>
-
+    <pre id="features"></pre>
     <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw';
     const map = new mapboxgl.Map({
@@ -79,11 +91,31 @@
         center: [13, 52]
     });
 
-    const slider = document.getElementById('slider');
-    const sliderValue = document.getElementById('slider-value');
+    const subslider = document.getElementById('sub-slider');
+    const subValue = document.getElementById('sub-value');
+    const gridslider = document.getElementById('grid-slider');
+    const gridValue = document.getElementById('grid-value');
+    const fiberslider = document.getElementById('fiber-slider');
+    const fiberValue = document.getElementById('fiber-value');
 
     map.on('load', () => {
-        map.addSource('fused-vector-source', {
+        map.addSource('sub-hex', {
+            'type': 'vector',
+            'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
+                'https://www.fused.io/server/v1/realtime-shared/fsh_1HqetymvTpJwiQKxMeXNRB/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
+            ],
+            'minzoom': 11,
+            'maxzoom': 11
+        });
+        map.addSource('grid-hex', {
+            'type': 'vector',
+            'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
+                'https://www.fused.io/server/v1/realtime-shared/fsh_1HqetymvTpJwiQKxMeXNRB/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
+            ],
+            'minzoom': 11,
+            'maxzoom': 11
+        });
+        map.addSource('fiber-hex', {
             'type': 'vector',
             'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
                 'https://www.fused.io/server/v1/realtime-shared/fsh_1HqetymvTpJwiQKxMeXNRB/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
@@ -93,9 +125,85 @@
         });
         map.addLayer(
             {
-                'id': 'fused-vector-layer', // Layer ID
+                'id': 'sub-hex', // Layer ID
                 'type': 'fill',
-                'source': 'fused-vector-source', // ID of the tile source created above
+                'source': 'sub-hex', // ID of the tile source created above
+                'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
+                'layout': {
+                    'fill-sort-key': ['get', 'dist']
+                },
+                'paint': {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'dist'],
+                        0,
+                        '#F2F12D',
+                        500,
+                        '#EED322',
+                        1000,
+                        '#E6B71E',
+                        1500,
+                        '#DA9C20',
+                        2000,
+                        '#CA8323',
+                        2500,
+                        '#B86B25',
+                        3000,
+                        '#A25626',
+                        3500,
+                        '#8B4225',
+                        4000,
+                        '#723122'
+                    ],
+                    'fill-opacity': 0.75
+                },
+                maxzoom: 13
+            }
+        );
+        map.addLayer(
+            {
+                'id': 'grid-hex', // Layer ID
+                'type': 'fill',
+                'source': 'grid-hex', // ID of the tile source created above
+                'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
+                'layout': {
+                    'fill-sort-key': ['get', 'dist']
+                },
+                'paint': {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'dist'],
+                        0,
+                        '#F2F12D',
+                        500,
+                        '#EED322',
+                        1000,
+                        '#E6B71E',
+                        1500,
+                        '#DA9C20',
+                        2000,
+                        '#CA8323',
+                        2500,
+                        '#B86B25',
+                        3000,
+                        '#A25626',
+                        3500,
+                        '#8B4225',
+                        4000,
+                        '#723122'
+                    ],
+                    'fill-opacity': 0.75
+                },
+                maxzoom: 13
+            }
+        );
+        map.addLayer(
+            {
+                'id': 'fiber-hex', // Layer ID
+                'type': 'fill',
+                'source': 'fiber-hex', // ID of the tile source created above
                 'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
                 'layout': {
                     'fill-sort-key': ['get', 'dist']
@@ -155,12 +263,12 @@
             }
         );
 
-        slider.addEventListener('input', (e) => {
+        subslider.addEventListener('input', (e) => {
             // Adjust the layers opacity. layer here is arbitrary - this could
             // be another layer name found in your style or a custom layer
             // added on the fly using `addSource`.
             map.setPaintProperty(
-                'fused-vector-layer',
+                'sub-hex',
                 'fill-color', [
                 'interpolate',
                 ['linear'],
@@ -175,14 +283,67 @@
                   3500 * (100/e.target.value), '#8B4225',
                   4000 * (100/e.target.value), '#723122']);
             map.setPaintProperty(
-              'fused-vector-layer',
+              'sub-hex',
               'fill-opacity',
               parseInt(e.target.value, 10) / 100); 
 
             // Value indicator
-            sliderValue.textContent = e.target.value + '%';
+            subValue.textContent = e.target.value + '%';
         });
+        gridslider.addEventListener('input', (e) => {
+            // Adjust the layers opacity. layer here is arbitrary - this could
+            // be another layer name found in your style or a custom layer
+            // added on the fly using `addSource`.
+            map.setPaintProperty(
+                'grid-hex',
+                'fill-color', [
+                'interpolate',
+                ['linear'],
+                  ['get', 'dist'],
+                  0, '#F2F12D',
+                  500 * (100/e.target.value), '#EED322',
+                  1000 * (100/e.target.value), '#E6B71E',
+                  1500 * (100/e.target.value), '#DA9C20',
+                  2000 * (100/e.target.value), '#CA8323',
+                  2500 * (100/e.target.value), '#B86B25',
+                  3000 * (100/e.target.value), '#A25626',
+                  3500 * (100/e.target.value), '#8B4225',
+                  4000 * (100/e.target.value), '#723122']);
+            map.setPaintProperty(
+              'grid-hex',
+              'fill-opacity',
+              parseInt(e.target.value, 10) / 100); 
 
+            // Value indicator
+            gridValue.textContent = e.target.value + '%';
+        });
+        fiberslider.addEventListener('input', (e) => {
+            // Adjust the layers opacity. layer here is arbitrary - this could
+            // be another layer name found in your style or a custom layer
+            // added on the fly using `addSource`.
+            map.setPaintProperty(
+                'fiber-hex',
+                'fill-color', [
+                'interpolate',
+                ['linear'],
+                  ['get', 'dist'],
+                  0, '#F2F12D',
+                  500 * (100/e.target.value), '#EED322',
+                  1000 * (100/e.target.value), '#E6B71E',
+                  1500 * (100/e.target.value), '#DA9C20',
+                  2000 * (100/e.target.value), '#CA8323',
+                  2500 * (100/e.target.value), '#B86B25',
+                  3000 * (100/e.target.value), '#A25626',
+                  3500 * (100/e.target.value), '#8B4225',
+                  4000 * (100/e.target.value), '#723122']);
+            map.setPaintProperty(
+              'fiber-hex',
+              'fill-opacity',
+              parseInt(e.target.value, 10) / 100); 
+
+            // Value indicator
+            fiberValue.textContent = e.target.value + '%';
+        });
         map.addSource('fiber', {
             'type': 'vector',
             'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
@@ -252,6 +413,37 @@
             zoom: 11
           });
         });
+
+        map.on('mousemove', (e) => {
+        const features = map.queryRenderedFeatures(e.point);
+
+        // Limit the number of properties we're displaying for
+        // legibility and performance
+        const displayProperties = [
+            'type',
+            'properties',
+            'id',
+            'layer',
+            'source',
+            'sourceLayer',
+            'state'
+        ];
+
+        const displayFeatures = features.map((feat) => {
+            const displayFeat = {};
+            displayProperties.forEach((prop) => {
+                displayFeat[prop] = feat[prop];
+            });
+            return displayFeat;
+        });
+
+        // Write object as string with an indent of two spaces.
+        document.getElementById('features').innerHTML = JSON.stringify(
+            displayFeatures,
+            null,
+            2
+        );
+    });
     })
 </script>
 
