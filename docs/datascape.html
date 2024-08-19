@@ -11,6 +11,7 @@
     />
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
     <script src="https://unpkg.com/deck.gl@^9.0.14/dist.min.js"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
   </head>
   <body>
     <style type="text/css">
@@ -55,10 +56,26 @@
         bottom: 0;
         width: 20%;
         overflow: auto;
+        padding-left: 20px;
         background: rgba(255, 255, 255, 0.8);
     }
     #map canvas {
         cursor: crosshair;
+    }
+
+    #fade {
+        display: block;
+        position: relative;
+        margin: 0px auto;
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: center;
+        color: #fff;
+        background: #ee8a65;
     }
 
     </style>
@@ -77,10 +94,19 @@
         <input id="grid-slider" type="range" min="0" max="100" step="0" value="100">
         <label>Glasfaser: <span id="fiber-value">0%</span></label>
         <input id="fiber-slider" type="range" min="0" max="100" step="0" value="100">
+        <button id="fade">Auswerten</button>
     </div>
     </div>
     <pre id="features"></pre>
     <script>
+
+
+    function sleep(ms) {
+      var start = new Date().getTime(), expire = start + ms;
+      while (new Date().getTime() < expire) { }
+      return;
+    }
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw';
     const map = new mapboxgl.Map({
         container: 'map',
@@ -97,6 +123,7 @@
     const gridValue = document.getElementById('grid-value');
     const fiberslider = document.getElementById('fiber-slider');
     const fiberValue = document.getElementById('fiber-value');
+    var coordinates = null;
 
     map.on('load', () => {
         map.addSource('sub-hex', {
@@ -396,8 +423,11 @@
         );
 
 
+       // Add a scale control to the map
+        map.addControl(new mapboxgl.ScaleControl());
+
+        // Add map nav
         map.addControl(new mapboxgl.NavigationControl());
-        console.log("Navigation control added");
 
         // Add Geocoder control to the map
         const geocoder = new MapboxGeocoder({
@@ -407,43 +437,194 @@
         map.addControl(geocoder, 'top-left'); // Adding geocoder to top right corner
 
         geocoder.on('result', (event) => {
-          const coordinates = event.result.center;
+          coordinates = event.result.center;
           map.flyTo({
             center: coordinates,
-            zoom: 11
+            zoom: 13
           });
         });
 
         map.on('mousemove', (e) => {
-        const features = map.queryRenderedFeatures(e.point);
+            const features = map.queryRenderedFeatures(e.point);
 
-        // Limit the number of properties we're displaying for
-        // legibility and performance
-        const displayProperties = [
-            'type',
-            'properties',
-            'id',
-            'layer',
-            'source',
-            'sourceLayer',
-            'state'
-        ];
+            // Limit the number of properties we're displaying for
+            // legibility and performance
+            const displayProperties = [
+                'type',
+                'properties',
+                'id',
+                'layer',
+                'source',
+                'sourceLayer',
+                'state'
+            ];
 
-        const displayFeatures = features.map((feat) => {
-            const displayFeat = {};
-            displayProperties.forEach((prop) => {
-                displayFeat[prop] = feat[prop];
+            const layers = [
+                'sub-hex',
+                'grid-hex',
+                'fiber-hex']
+
+            const layers_map = {
+                'sub-hex': 'Umspannwerk',
+                'grid-hex': 'Stromnetz',
+                'fiber-hex': 'Glasfaser'}
+
+            var subSeen = false;
+            var gridSeen = false;
+            var fiberSeen = false;
+
+            const displayFeatures = features.map((feat) => {
+                var displayFeat = [];
+                displayProperties.forEach((prop) => {
+                    if (layers.indexOf(feat['layer']['id']) !== -1) {
+                        if (feat['layer']['id'] == 'sub-hex' && !subSeen) {
+                            subSeen = true;
+                            displayFeat.push([layers_map[feat['layer']['id']] + ' ' + (feat['properties']['dist'] / 1000).toFixed(2) + ' ' +'KM']);
+                        }
+                        else if (feat['layer']['id'] == 'grid-hex' && !gridSeen) {
+                            gridSeen = true;
+                            displayFeat.push([layers_map[feat['layer']['id']] + ' ' + (feat['properties']['dist'] / 1000).toFixed(2) + ' ' +'KM']);
+                        }
+                        else if (feat['layer']['id'] == 'fiber-hex' && !fiberSeen) {
+                            fiberSeen = true;
+                            displayFeat.push([layers_map[feat['layer']['id']] + ' ' + (feat['properties']['dist'] / 1000).toFixed(2) + ' ' +'KM']);
+                        }
+                }
+                });
+                return displayFeat;
             });
-            return displayFeat;
-        });
 
-        // Write object as string with an indent of two spaces.
-        document.getElementById('features').innerHTML = JSON.stringify(
-            displayFeatures,
-            null,
-            2
-        );
+            // Write object as string with an indent of two spaces.
+            document.getElementById('features').textContent = ''
+            var ulElement = document.getElementById('features')
+            // Loop through the array and create LI elements
+            displayFeatures.forEach(item => {
+                // Create a new LI element
+                const li = document.createElement('h2');
+                // Set the text content of the LI element
+                li.textContent = item;
+                // Append the LI element to the UL
+                ulElement.appendChild(li);
+            });
     });
+
+        function findDistance() {
+            const point = turf.point(coordinates);
+
+            /**
+            * Calculate distances:
+            * For each store, use turf.disance to calculate the distance
+            * in miles between the searchResult and the store. Assign the
+            * calculated value to a property called `distance`.
+            */
+            var s_dist = 999999999999.
+            const options = { units: 'kilometers' };
+            const substation = map.queryRenderedFeatures({layers: ['substation']});
+            for (const s of substation) {
+              var distance = turf.distance(
+                point,
+                s.geometry,
+                options
+            );
+              if (distance < s_dist) {
+                s_dist = distance
+              } else {}
+            }
+
+            /**
+            * Sort stores by distance from closest to the `searchResult`
+            * to furthest.
+            */
+            substation.sort((a, b) => {
+            if (a.properties.distance > b.properties.distance) {
+              return 1;
+            }
+            if (a.properties.distance < b.properties.distance) {
+              return -1;
+            }
+            return 0; // a must be equal to b
+            });
+
+            /**
+            * Calculate distances:
+            * For each store, use turf.disance to calculate the distance
+            * in miles between the searchResult and the store. Assign the
+            * calculated value to a property called `distance`.
+            */
+            var g_dist = 999999999999.
+            const grid = map.queryRenderedFeatures({layers: ['grid']});
+            for (const g of grid) {
+              var distance = turf.pointToLineDistance(
+                point,
+                g.geometry,
+                options
+            );
+              if (distance < g_dist) {
+                g_dist = distance
+              } else {}
+            }
+
+            /**
+            * Sort stores by distance from closest to the `searchResult`
+            * to furthest.
+            */
+            grid.sort((a, b) => {
+            if (a.properties.distance > b.properties.distance) {
+              return 1;
+            }
+            if (a.properties.distance < b.properties.distance) {
+              return -1;
+            }
+            return 0; // a must be equal to b
+            });
+
+            /**
+            * Calculate distances:
+            * For each store, use turf.disance to calculate the distance
+            * in miles between the searchResult and the store. Assign the
+            * calculated value to a property called `distance`.
+            */
+            var f_dist = 999999999999.
+            const fiber = map.queryRenderedFeatures({layers: ['fiber']});
+            for (const f of fiber) {
+                var mls_coords = f.toJSON()['geometry']['coordinates'];
+                for (let index = 0; index < mls_coords.length; index++) {
+                  var line = turf.lineString(mls_coords[index]);
+
+                  var distance = turf.pointToLineDistance(
+                    point,
+                    line,
+                    options
+                );
+                  if (distance < f_dist) {
+                    f_dist = distance
+                  } else {}
+                }
+            }
+
+            /**
+            * Sort stores by distance from closest to the `searchResult`
+            * to furthest.
+            */
+            fiber.sort((a, b) => {
+            if (a.properties.distance > b.properties.distance) {
+              return 1;
+            }
+            if (a.properties.distance < b.properties.distance) {
+              return -1;
+            }
+            return 0; // a must be equal to b
+            });
+
+            document.getElementById('features').innerHTML = '\
+            <h1>Umspannwerk ' + s_dist.toFixed(2) + 'KM</h1>' +
+            '<h1>Stromnetz ' + g_dist.toFixed(2) + 'KM</h1>' +
+            '<h1>Glasfaser: ' + f_dist.toFixed(2) + 'KM</h1>'
+        }
+        // Consume fill-opacity-transition, switch between fade out and fade in on click, and fade.
+        document.getElementById('fade').addEventListener('click', () => {
+            findDistance();
+        });
     })
 </script>
 
