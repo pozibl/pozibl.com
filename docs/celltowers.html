@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/deck.gl@^9.0.14/dist.min.js"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+  </head>
+  <body>
+    <style type="text/css">
+      .map-overlay {
+        font:
+            bold 12px/20px 'Helvetica Neue',
+            Arial,
+            Helvetica,
+            sans-serif;
+        position: absolute;
+        width: 240px;
+        top: 60px;
+        left: 9;
+        padding: 10px;
+    }
+
+    .map-overlay .map-overlay-inner {
+        background-color: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .map-overlay label {
+        display: block;
+        margin: 0 0 10px;
+    }
+
+    .map-overlay input {
+        background-color: transparent;
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        margin: 0;
+        cursor: ew-resize;
+    }
+    #features {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 20%;
+        overflow: auto;
+        padding-left: 20px;
+        background: rgba(255, 255, 255, 0.8);
+    }
+    #map canvas {
+        cursor: crosshair;
+    }
+
+    #fade {
+        display: block;
+        position: relative;
+        margin: 0px auto;
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        font-size: 12px;
+        text-align: center;
+        color: #fff;
+        background: #ee8a65;
+    }
+
+    </style>
+
+    <!-- Load the `mapbox-gl-geocoder` plugin. -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+    <div id="map" style="width: 100%; height: 100vh"></div>
+
+    <pre id="features"></pre>
+    <script>
+
+
+    function sleep(ms) {
+      var start = new Date().getTime(), expire = start + ms;
+      while (new Date().getTime() < expire) { }
+      return;
+    }
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/dark-v10',
+        zoom: 2,
+        projection: 'globe',
+        center: [-111.950684, 39.419220]
+    });
+
+    var coordinates = null;
+
+    map.on('load', () => {
+        map.addSource('cell-towers', {
+            'type': 'vector',
+            'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
+                'https://www.fused.io/server/v1/realtime-shared/fsh_273BYW0cJRQA9ORYwvNPFb/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
+            ],
+            'minzoom': 1,
+            'maxzoom': 20
+        });
+
+        map.addLayer(
+            {
+                'id': 'cell-towers', // Layer ID
+                'type': 'fill',
+                'source': 'cell-towers', // ID of the tile source created above
+                'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
+                'layout': {
+                    'fill-sort-key': ['get', 'LocState']
+                },
+                'paint': {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'LocState'],
+                        0,
+                        '#F2F12D',
+                        500,
+                        '#EED322',
+                        1000,
+                        '#E6B71E',
+                        1500,
+                        '#DA9C20',
+                        2000,
+                        '#CA8323',
+                        2500,
+                        '#B86B25',
+                        3000,
+                        '#A25626',
+                        3500,
+                        '#8B4225',
+                        4000,
+                        '#723122'
+                    ],
+                    'fill-opacity': 0.75
+                }
+            }
+        );
+
+
+       // Add a scale control to the map
+        map.addControl(new mapboxgl.ScaleControl());
+
+        // Add map nav
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Add Geocoder control to the map
+        const geocoder = new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl
+        });
+        map.addControl(geocoder, 'top-left'); // Adding geocoder to top right corner
+
+        geocoder.on('result', (event) => {
+          coordinates = event.result.center;
+          map.flyTo({
+            center: coordinates,
+            zoom: 15
+          });
+        });
+
+        map.on('mousemove', (e) => {
+            const features = map.queryRenderedFeatures(e.point);
+
+            // Limit the number of properties we're displaying for
+            // legibility and performance
+            const displayProperties = [
+                'type',
+                'properties',
+                'id',
+                'layer',
+                'source',
+                'sourceLayer',
+                'state'
+            ];
+
+            const layers = [
+                'cell-towers']
+
+            const layers_map = {
+                'cell-towers': 'Cell Tower'}
+
+            var cellSeen = false;
+            const displayFeatures = features.map((feat) => {
+                var displayFeat = [];
+                displayProperties.forEach((prop) => {
+                    if (layers.indexOf(feat['layer']['id']) !== -1) {
+                        if (feat['layer']['id'] == 'cell-towers' && !cellSeen) {
+                            cellSeen = true;
+                            console.log(feat);
+                        }
+                        displayFeat.push(feat['properties']['Licensee']);
+                    }
+                });
+                return displayFeat;
+            });
+            // Write object as string with an indent of two spaces.
+            document.getElementById('features').textContent = ''
+            var ulElement = document.getElementById('features')
+            // Loop through the array and create LI elements
+            displayFeatures.forEach(item => {
+                // Create a new LI element
+                const li = document.createElement('h2');
+                // Set the text content of the LI element
+                li.textContent = item;
+                // Append the LI element to the UL
+                ulElement.appendChild(li);
+            });
+
+
+        })
+    })
+</script>
+
+</body>
+</html>
