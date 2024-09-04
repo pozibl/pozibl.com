@@ -77,7 +77,23 @@
         color: #fff;
         background: #ee8a65;
     }
-
+    #controls {
+        position: absolute;
+        bottom: 60px;
+        left: 10px;
+        background: white;
+        padding: 20px;
+        z-index: 1;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    #controls .shadcn-card-body {
+        display: flex;
+        flex-direction: column;
+    }
+    #controls .shadcn-input {
+        margin-bottom: 10px;
+    }
     </style>
 
     <!-- Load the `mapbox-gl-geocoder` plugin. -->
@@ -85,15 +101,18 @@
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
     <div id="map" style="width: 100%; height: 100vh"></div>
 
+    <div id="controls">
+        <div class="shadcn-card-body">
+            <label for="buffer" class="shadcn-label">Buffer (m):</label>
+            <input type="text" id="buffer" name="buffer" value="1000" class="shadcn-input shadcn-input-filled" />
+            <label for="licensee" class="shadcn-label">Licensee:</label>
+            <input type="text" id="licensee" name="licensee" value="Verizon" class="shadcn-input shadcn-input-filled" />
+            <button id="updateButton" class="shadcn-btn shadcn-btn-primary">Update</button>
+        </div>
+    </div>
+
     <pre id="features"></pre>
     <script>
-
-
-    function sleep(ms) {
-      var start = new Date().getTime(), expire = start + ms;
-      while (new Date().getTime() < expire) { }
-      return;
-    }
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw';
     const map = new mapboxgl.Map({
@@ -107,13 +126,40 @@
 
     var coordinates = null;
 
+
+    function updateLayer(buffer, licensee) {
+        let dataUrlParams = "";
+
+        if (buffer.trim() !== "") {
+        // Split the string by comma and trim whitespace around each item
+        const items = buffer.split('/').map(item => item.trim());
+        const intArray = items.map(item => parseInt(item, 10));
+        dataUrlParams = dataUrlParams + '&buffer=' + encodeURIComponent(JSON.stringify(intArray));
+        } else {
+        console.log("Input string is empty or only contains whitespace.");
+        }
+
+        if (licensee.trim() !== "") {
+        // Split the string by comma and trim whitespace around each item
+        const items = licensee.split(',').map(item => item.trim());
+        dataUrlParams = dataUrlParams + '&licensee=' + encodeURIComponent(JSON.stringify(items));
+        } else {
+            console.log("Input string is empty or only contains whitespace.");
+        }
+
+        const dataUrl = 'https://www.fused.io/server/v1/realtime-shared/fsh_273BYW0cJRQA9ORYwvNPFb/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt' + dataUrlParams;
+        console.log(dataUrl);
+        map.getSource("cell-towers").setTiles([dataUrl]);
+
+    }
+
     map.on('load', () => {
         map.addSource('cell-towers', {
             'type': 'vector',
             'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
                 'https://www.fused.io/server/v1/realtime-shared/fsh_273BYW0cJRQA9ORYwvNPFb/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
             ],
-            'minzoom': 1,
+            'minzoom': 2,
             'maxzoom': 20
         });
 
@@ -162,6 +208,13 @@
         // Add map nav
         map.addControl(new mapboxgl.NavigationControl());
 
+        document.getElementById('updateButton').addEventListener('click', () => {
+            const buffer = document.getElementById('buffer').value;
+            const licensee = document.getElementById('licensee').value;
+            updateLayer(buffer, licensee);
+        });
+
+
         // Add Geocoder control to the map
         const geocoder = new MapboxGeocoder({
           accessToken: mapboxgl.accessToken,
@@ -205,11 +258,13 @@
                     if (layers.indexOf(feat['layer']['id']) !== -1) {
                         if (feat['layer']['id'] == 'cell-towers' && !cellSeen) {
                             cellSeen = true;
-                            console.log(feat);
+                            //console.log(feat);
                         }
                         displayFeat.push(feat['properties']['Licensee']);
                     }
                 });
+
+                displayFeat = [... new Set(displayFeat)];
                 return displayFeat;
             });
             // Write object as string with an indent of two spaces.
