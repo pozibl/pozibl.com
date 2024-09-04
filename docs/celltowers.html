@@ -169,35 +169,45 @@
                 'type': 'fill',
                 'source': 'cell-towers', // ID of the tile source created above
                 'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
-                'layout': {
-                    'fill-sort-key': ['get', 'LocState']
-                },
-                'paint': {
-                    'fill-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['get', 'LocState'],
-                        0,
-                        '#F2F12D',
-                        500,
-                        '#EED322',
-                        1000,
-                        '#E6B71E',
-                        1500,
-                        '#DA9C20',
-                        2000,
-                        '#CA8323',
-                        2500,
-                        '#B86B25',
-                        3000,
-                        '#A25626',
-                        3500,
-                        '#8B4225',
-                        4000,
-                        '#723122'
-                    ],
-                    'fill-opacity': 0.75
-                }
+                layout: {
+                        "fill-sort-key": ["get", "UniqSysID"],
+                    },
+                    paint: {
+                        "fill-color": [
+                            "interpolate",
+                            ["linear"],
+                            ["get", "UniqSysID"],
+                            0,
+                            "#ff0000",
+                            361538,
+                            "#ff6a00",
+                            723076,
+                            "#ffd400",
+                            1084614,
+                            "#bfff00",
+                            1446152,
+                            "#4eff00",
+                            1807690,
+                            "#00ff1b",
+                            2169228,
+                            "#00ff85",
+                            2530766,
+                            "#00fff5",
+                            2892304,
+                            "#009dff",
+                            3253842,
+                            "#0033ff",
+                            3615380,
+                            "#3600ff",
+                            3976918,
+                            "#a700ff",
+                            4338456,
+                            "#ff00ec",
+                            4699994,
+                            "#ff0082",
+                        ],
+                        "fill-opacity": 0.75,
+                    }
             }
         );
 
@@ -265,6 +275,7 @@
                 });
 
                 displayFeat = [... new Set(displayFeat)];
+                console.log(displayFeat);
                 return displayFeat;
             });
             // Write object as string with an indent of two spaces.
