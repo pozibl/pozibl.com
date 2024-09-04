@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css"
+            rel="stylesheet"
+        />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+        <script src="https://unpkg.com/deck.gl@^9.0.14/dist.min.js"></script>
+        <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+        <style>
+            html,
+            body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                display: grid;
+                grid-template-columns: 70% 30%;
+                height: 100vh;
+            }
+
+            .column {
+            }
+
+            .left {
+                background-color: #f0f0f0;
+            }
+
+            .right {
+                font:
+                    bold 12px/20px "Helvetica Neue",
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+                padding: 20px;
+                background-color: #e0e0e0;
+            }
+            .right li {
+                margin-top: 8px;
+                border-bottom: 1px solid #ccc;
+            }
+            .right li:last-child {
+                border-bottom: none;
+            }
+
+            #controls {
+                position: absolute;
+                bottom: 80px;
+                left: 10px;
+                background: white;
+                padding: 20px;
+                z-index: 1;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+            #controls .shadcn-card-body {
+                display: flex;
+                flex-direction: column;
+            }
+            #controls .shadcn-input {
+                margin-bottom: 10px;
+            }
+        </style>
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+            type="text/css"
+        />
+    </head>
+    <body>
+        <!-- Load the `mapbox-gl-geocoder` plugin. -->
+
+        <div class="container">
+            <div class="column left">
+                <div id="map" style="width: 100%; height: 100vh"></div>
+            </div>
+            <div class="column right">
+                <p id="features"></p>
+            </div>
+        </div>
+
+        <div id="controls">
+            <div class="shadcn-card-body">
+                <label for="buffer" class="shadcn-label">Buffer (m):</label>
+                <input
+                    type="text"
+                    id="buffer"
+                    name="buffer"
+                    value="1000"
+                    class="shadcn-input shadcn-input-filled"
+                />
+                <label for="licensee" class="shadcn-label">Licensee:</label>
+                <input
+                    type="text"
+                    id="licensee"
+                    name="licensee"
+                    value="Verizon"
+                    class="shadcn-input shadcn-input-filled"
+                />
+                <!-- <select id="licensee"></select> -->
+                <button id="updateButton" class="shadcn-btn shadcn-btn-primary">
+                    Update
+                </button>
+            </div>
+        </div>
+
+        <script>
+            mapboxgl.accessToken =
+                "pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw";
+            const map = new mapboxgl.Map({
+                container: "map",
+                // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+                style: "mapbox://styles/mapbox/dark-v10",
+                zoom: 2,
+                projection: "globe",
+                center: [-111.950684, 39.41922],
+            });
+
+            var coordinates = null;
+
+            function updateLayer(buffer, licensee) {
+                let dataUrlParams = "";
+
+                if (buffer.trim() !== "") {
+                    // Split the string by comma and trim whitespace around each item
+                    const items = buffer.split("/").map((item) => item.trim());
+                    const intArray = items.map((item) => parseInt(item, 10));
+                    dataUrlParams =
+                        dataUrlParams +
+                        "&buffer=" +
+                        encodeURIComponent(JSON.stringify(intArray));
+                } else {
+                    console.log(
+                        "Input string is empty or only contains whitespace.",
+                    );
+                }
+
+                if (licensee.trim() !== "") {
+                    // Split the string by comma and trim whitespace around each item
+                    const items = licensee
+                        .split(",")
+                        .map((item) => item.trim());
+                    dataUrlParams =
+                        dataUrlParams +
+                        "&licensee=" +
+                        encodeURIComponent(JSON.stringify(items));
+                } else {
+                    console.log(
+                        "Input string is empty or only contains whitespace.",
+                    );
+                }
+
+                const dataUrl =
+                    "https://www.fused.io/server/v1/realtime-shared/fsh_273BYW0cJRQA9ORYwvNPFb/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt" +
+                    dataUrlParams;
+                console.log(dataUrl);
+                map.getSource("cell-towers").setTiles([dataUrl]);
+            }
+
+            map.on("load", () => {
+                map.addSource("cell-towers", {
+                    type: "vector",
+                    tiles: [
+                        // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
+                        "https://www.fused.io/server/v1/realtime-shared/fsh_273BYW0cJRQA9ORYwvNPFb/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt",
+                    ],
+                    minzoom: 2,
+                    maxzoom: 20,
+                });
+
+                map.addLayer({
+                    id: "cell-towers", // Layer ID
+                    type: "fill",
+                    source: "cell-towers", // ID of the tile source created above
+                    "source-layer": "udf", // Important! The source-layer name is 'udf' for all Fused vector tiles
+                    layout: {
+                        "fill-sort-key": ["get", "LocNum"],
+                    },
+                    paint: {
+                        "fill-color": [
+                            "interpolate",
+                            ["linear"],
+                            ["get", "LocNum"],
+                            0,
+                            "#ff0000",
+                            45,
+                            "#ffa500",
+                            90,
+                            "#ffff00",
+                            135,
+                            "#008000",
+                            179,
+                            "#0000ff",
+                        ],
+                        "fill-opacity": 0.75,
+                    },
+                });
+
+                // Add a scale control to the map
+                map.addControl(new mapboxgl.ScaleControl());
+
+                // Add map nav
+                map.addControl(new mapboxgl.NavigationControl());
+
+                document
+                    .getElementById("updateButton")
+                    .addEventListener("click", () => {
+                        const buffer = document.getElementById("buffer").value;
+                        const licensee =
+                            document.getElementById("licensee").value;
+                        console.log(licensee);
+                        updateLayer(buffer, licensee);
+                    });
+
+                // Add Geocoder control to the map
+                const geocoder = new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    mapboxgl: mapboxgl,
+                });
+                map.addControl(geocoder, "top-left"); // Adding geocoder to top right corner
+
+                geocoder.on("result", (event) => {
+                    coordinates = event.result.center;
+                    map.flyTo({
+                        center: coordinates,
+                        zoom: 15,
+                    });
+                });
+
+                map.on("mousemove", (e) => {
+                    const features = map.queryRenderedFeatures(e.point);
+
+                    // Limit the number of properties we're displaying for
+                    // legibility and performance
+                    const displayProperties = [
+                        "type",
+                        "properties",
+                        "id",
+                        "layer",
+                        "source",
+                        "sourceLayer",
+                        "state",
+                    ];
+
+                    const layers = ["cell-towers"];
+
+                    const layers_map = {
+                        "cell-towers": "Cell Tower",
+                    };
+
+                    var cellSeen = false;
+                    const displayFeatures = features.map((feat) => {
+                        var displayFeat = [];
+                        displayProperties.forEach((prop) => {
+                            if (layers.indexOf(feat["layer"]["id"]) !== -1) {
+                                if (
+                                    feat["layer"]["id"] == "cell-towers" &&
+                                    !cellSeen
+                                ) {
+                                    cellSeen = true;
+                                    //console.log(feat);
+                                }
+                                displayFeat.push(
+                                    feat["properties"]["Licensee"],
+                                );
+                            }
+                        });
+
+                        displayFeat = [...new Set(displayFeat)];
+                        console.log(displayFeat);
+                        return displayFeat;
+                    });
+                    // Write object as string with an indent of two spaces.
+                    document.getElementById("features").textContent = "";
+                    var ulElement = document.getElementById("features");
+                    // Loop through the array and create LI elements
+                    displayFeatures.forEach((item) => {
+                        // Create a new LI element
+                        const li = document.createElement("h2");
+                        // Set the text content of the LI element
+                        li.textContent = item;
+                        // Append the LI element to the UL
+                        ulElement.appendChild(li);
+                    });
+                });
+
+                map.resize();
+            });
+
+            const dropdown = document.getElementById("licensee");
+
+            var licensees = [
+                "Bell Atlantic Mobile Systems LLC",
+                "Americell PA-3, L.P.",
+                "UNION TELEPHONE COMPANY",
+                "Cross-Valliant Cellular Partnership",
+                "USCOC NEBRASKA/KANSAS, LLC",
+                "USCOC OF RICHLAND, INC.",
+                "Cellular South Licenses, LLC",
+                "CommNet Cellular Inc.",
+                "GTE MOBILNET OF FLORENCE, ALABAMA INCORPORATED",
+                "FLORIDA RSA NO. 2B (INDIAN RIVER) LIMITED PARTNERSHIP",
+                "WESTERN SUB-RSA LIMITED PARTNERSHIP",
+                "ALLTEL Communications of Arkansas RSA #12 Cellular Limited Partnership",
+                "CALIFORNIA RURAL SERVICE AREA #1, INC.",
+                "Union Telephone Company",
+                "CALIFORNIA RSA NO. 4 LIMITED PARTNERSHIP",
+                "BISMARCK MSA LIMITED PARTNERSHIP",
+                "NORTHEAST PENNSYLVANIA SMSA LIMITED PARTNERSHIP",
+                "ALLTEL COMMUNICATIONS OF NORTH CAROLINA LIMITED PARTNERSHIP",
+                "KENOSHA CELLULAR TELEPHONE, L.P.",
+                "Idaho 6-Clark Limited Partnership",
+                "GILA RIVER CELLULAR GENERAL PARTNERSHIP",
+                "NEW MEXICO RSA NO. 5 LIMITED PARTNERSHIP",
+                "GTE MOBILNET OF FORT WAYNE LIMITED PARTNERSHIP",
+                "Jacksonville Cellular Telephone Company",
+                "BLANCA TELEPHONE COMPANY",
+                "Hardy Cellular Telephone Company",
+                "ALLENTOWN SMSA LIMITED PARTNERSHIP",
+                "PANHANDLE TELECOMMUNICATION SYSTEMS, INC.",
+                "Tisdale Telephone Company, LLC",
+                "TeleGuam Holdings, LLC",
+                "VITELCOM CELLULAR, INC.",
+                "NORTHEASTERN GEORGIA RSA LIMITED PARTNERSHIP",
+                "Nsight Spectrum, LLC",
+                "Puerto Rico Telephone Company, Inc.",
+                "PENNSYLVANIA RSA NO. 6 (I) LIMITED PARTNERSHIP",
+                "HARDY CELLULAR TELEPHONE COMPANY",
+                "THUMB CELLULAR LLC",
+                "Iowa 8-Monona Limited Partnership",
+                "SBI License Corporation",
+                "NEW MEXICO RSA 6-I PARTNERSHIP",
+                "Missouri RSA 8 Limited Partnership",
+                "NORTHWEST DAKOTA CELLULAR OF NORTH DAKOTA LIMITED PARTNERSHIP",
+                "Blanca Telephone Company",
+                "Rural Cellular Corporation",
+                "Missouri RSA 2 Limited Partnership",
+                "MAINE RSA #4, INC.",
+                "DOCOMO PACIFIC, INC.",
+                "FARMERS CELLULAR TELEPHONE COMPANY, INC.",
+                "USCOC OF WASHINGTON-4, INC.",
+                "Illinois RSA 6 and 7 Limited Partnership",
+                "GADSDEN CELLTELCO PARTNERSHIP",
+                "PINE BELT CELLULAR, INC.",
+                "UNITED STATES CELLULAR OPERATING COMPANY OF MEDFORD",
+                "Gold Creek Cellular of Montana Limited Partnership",
+                "New York SMSA Limited Partnership",
+                "USCOC OF CENTRAL ILLINOIS, LLC",
+                "MADISON CELLULAR TELEPHONE COMPANY",
+                "UNITED STATES CELLULAR OPERATING COMPANY OF KNOXVILLE",
+                "MAINE RSA #1, INC.",
+                "CEDAR RAPIDS CELLULAR TELEPHONE, L.P.",
+                "NH #1 RURAL CELLULAR, INC.",
+                "USCOC OF LACROSSE, LLC",
+                "CINGULAR WIRELESS OF TEXAS RSA #11 LIMITED PARTNERSHIP",
+                "East Kentucky Network, LLC d/b/a Appalachian Wireless",
+                "YAKIMA MSA LIMITED PARTNERSHIP",
+                "St. Joseph  CellTelCo",
+                "KANSAS #15 LIMITED PARTNERSHIP",
+                "GTE Mobilnet of Indiana Limited Partnership",
+                "Onvoy Spectrum, LLC",
+                "Oklahoma Independent RSA 7 Partnership",
+                "USCOC OF GREATER IOWA, LLC",
+                "Los Angeles SMSA Limited Partnership",
+                "VERMONT RSA NO. 2-B2, INC.",
+                "Liberty Mobile USVI Inc.",
+                "GTE MOBILNET OF INDIANA RSA #6 LIMITED PARTNERSHIP",
+                "North Central RSA 2 of North Dakota Limited Partnership",
+                "Custer Telephone Cooperative, Inc.",
+                "GTE MOBILNET OF SOUTH TEXAS LIMITED PARTNERSHIP",
+                "Uintah Basin Electronic Telecommunications, LLC d/b/a Strata Networks",
+                "TEXAS RSA 9B1 LIMITED PARTNERSHIP",
+                "Sacramento Valley Limited Partnership",
+                "Pinnacles Cellular, Inc.",
+                "GTE MOBILNET OF INDIANA RSA #3 LIMITED PARTNERSHIP",
+                "Cordova Wireless Communications, LLC",
+                "OptimERA Holdings, Inc.",
+                "Chicago SMSA LP",
+                "RSA 1 LIMITED PARTNERSHIP d/b/a CHAT MOBILITY",
+                "OKLAHOMA WESTERN TELEPHONE COMPANY",
+                "CELLCO PARTNERSHIP",
+                "USCOC OF GREATER NORTH CAROLINA, LLC",
+                "USCOC OF GREATER OKLAHOMA, LLC",
+                "PTI Pacifica Inc.",
+                "Springfield Cellular Telephone Company",
+                "GTE MOBILNET OF TERRE HAUTE LIMITED PARTNERSHIP",
+                "Seattle SMSA Limited Partnership",
+                "USCOC OF CUMBERLAND, LLC",
+                "UNITED STATES CELLULAR OPERATING COMPANY LLC",
+                "RACINE CELLULAR TELEPHONE COMPANY",
+                "TEXAS RSA 18 LIMITED PARTNERSHIP",
+                "PENNSYLVANIA RSA NO. 6 (II) LIMITED PARTNERSHIP",
+                "Commnet Four Corners, LLC",
+                "Missouri RSA 4 Limited Partnership",
+                "RSA 7 LIMITED PARTNERSHIP",
+                "PINE TELEPHONE COMPANY, INC.  dba Pine Cellular Phones, Inc.",
+                "MCDANIEL CELLULAR TELEPHONE COMPANY",
+                "Arctic Slope Telephone Association Cooperative, Inc.",
+                "Verizon Americas LLC",
+                "BRISTOL BAY CELLULAR PARTNERSHIP",
+                "USCOC OF OREGON RSA #5, INC.",
+                "Texas RSA 11B Limited Partnership",
+                "INDIANA RSA #1 LIMITED PARTNERSHIP",
+                "Carolina West Wireless, Inc.",
+                "Wasatch Utah RSA No. 2 Limited Partnership",
+                "BADLANDS CELLULAR OF NORTH DAKOTA LIMITED PARTNERSHIP",
+                "Wisconsin RSA #1 Limited Partnership",
+                "CMA-395 License Company, LLC",
+                "Cellular Network Partnership, An Oklahoma Limited Partnership",
+                "SACRAMENTO VALLEY LIMITED PARTNERSHIP",
+                "FRESNO MSA LIMITED PARTNERSHIP",
+                "AirTouch Cellular",
+                "NORTHWEST MISSOURI CELLULAR LIMITED PARTNERSHIP",
+                "OREGON RSA #2, INC.",
+                "KENTUCKY RSA NO. 1 PARTNERSHIP",
+                "Alltel Corporation",
+                "Copper Valley Wireless, LLC",
+                "Virginia RSA 5 Limited Partnership",
+                "NE Colorado Cellular, Inc.",
+                "Tyler/Longview/Marshall MSA Limited Partnership",
+                "NORTH DAKOTA RSA NO. 3 LIMITED PARTNERSHIP",
+                "Wisconsin RSA No. 8 Limited Partnership",
+                "T-Mobile License LLC",
+                "Elbert County Wireless, LLC",
+                "DUBUQUE CELLULAR TELEPHONE, L.P.",
+                "IOWA RSA NO. 12 LIMITED PARTNERSHIP",
+                "OTZ Telecommunications, LLC",
+                "Florida RSA No. 2B (Indian River) Limited Partnership",
+                "TEXAS RSA 6 LIMITED PARTNERSHIP",
+                "MISSOURI RSA 9B1 LIMITED PARTNERSHIP",
+                "North Dakota 5-Kidder Limited Partnership",
+                "American Samoa Telecommunications Authority",
+                "Windy City Cellular LLC",
+                "AST Telecom, LLC d/b/a Bluesky",
+                "Leaco Rural Telephone Cooperative, Inc.",
+                "Inland Cellular LLC",
+                "Liberty Mobile Puerto Rico Inc.",
+                "Petersburg Cellular Partnership",
+                "GTE MOBILNET OF INDIANA LIMITED PARTNERSHIP",
+                "Indiana RSA 2 Partnership",
+                "St. Lawrence Seaway RSA Cellular Partnership",
+                "Sioux City MSA  Limited Partnership",
+                "PENNSYLVANIA RSA 1 LIMITED PARTNERSHIP",
+                "Commnet of Nevada, LLC",
+                "Tuscaloosa Cellular Partnership",
+                "TOPEKA SMSA LIMITED PARTNERSHIP",
+                "NEW CINGULAR WIRELESS PCS, LLC",
+                "ANDERSON CELLTELCO",
+                "Pittsburgh SMSA Limited Partnership",
+                "Commnet of Arizona, LLC",
+                "Excomm, LLC",
+                "Cellco Partnership",
+                "HOUMA/THIBODAUX CELLULAR PARTNERSHP",
+                "Omaha Cellular Telephone Company",
+                "Pascagoula Cellular Partnership",
+                "Louisiana RSA No. 8 Limited Partnership",
+                "Lake Mobility LLC",
+                "REDDING MSA LIMITED PARTNERSHIP",
+                "Wisconsin RSA #6 Partnership, LLP",
+                "TEXAS RSA NO. 2 LIMITED PARTNERSHIP",
+                "SANTA BARBARA CELLULAR SYSTEMS, LTD",
+                "Chattanooga MSA Limited Partnership",
+                "OMAHA CELLULAR TELEPHONE COMPANY",
+                "Pittsfield Cellular Telephone Company",
+                "OKLAHOMA CITY SMSA LIMITED PARTNERSHIP",
+                "The Alaska Wireless Network, LLC",
+                "Topeka Cellular Telephone Company, Inc.",
+                "ALLTEL Corporation",
+                "Smith Bagley, Inc.",
+                "LOUISIANA RSA NO. 7 CELLULAR GENERAL PARTNERSHIP",
+                "ALLTEL Communications of North Carolina Limited Partnership",
+                "Acadiana Cellular General Partnership",
+                "OKLAHOMA RSA 9 LIMITED PARTNERSHIP",
+                "Ohio RSA 5 Limited Partnership d/b/a ALLTEL",
+                "USCOC OF VIRGINIA RSA #3, INC.",
+                "TEXAS RSA 19 LIMITED PARTNERSHIP",
+                "USCOC OF GREATER MISSOURI, LLC",
+                "ALLTEL COMMUNICATIONS OF LACROSSE LIMITED PARTNERSHIP",
+                "MISSOURI RSA 11/12 LIMITED PARTNERSHIP",
+                "Charleston-North Charleston MSA Limited Partnership",
+                "TelAlaska Cellular, Inc.",
+                "AT&T Mobility Spectrum, LLC",
+                "MILWAUKEE SMSA LIMITED PARTNERSHIP",
+                "Lubbock SMSA Limited Partnership",
+                "MCALLEN-EDINBURG-MISSION SMSA LIMITED PARTNERSHIP",
+                "Verizon Wireless of the East LP",
+                "Lafayette MSA Limited Partnership",
+                "IOWA RSA NO. 9 LIMITED PARTNERSHIP",
+                "TEXAS RSA 7B1 LIMITED PARTNERSHIP",
+                "TEXAS RSA 20B1 LIMITED PARTNERSHIP",
+                "SAGEBRUSH CELLULAR, INC.",
+                "LUBBOCK SMSA LIMITED PARTNERSHIP",
+                "AT&T Mobility of Galveston LLC",
+                "Orlando SMSA Limited Partnership",
+                "Fresno MSA Limited Partnership",
+                "Ohio RSA 6 Limited Partnership d/b/a ALLTEL",
+                "Texas RSA 18 Limited Partnership",
+                "BANGOR CELLULAR TELEPHONE, L.P.",
+                "ATHENS CELLULAR, INC.",
+                "MADISON SMSA LIMITED PARTNERSHIP",
+                "Texas RSA 19 Limited Partnership",
+                "GTE MOBILNET OF CALIFORNIA LIMITED PARTNERSHIP",
+                "GOLD CREEK CELLULAR OF MONTANA LIMITED PARTNERSHIP",
+                "New Cingular Wireless PCS, LLC",
+                "Milwaukee SMSA Limited Partnership",
+                "United States Cellular Operating Company of Medford",
+                "Muskegon Cellular Partnership",
+                "NEW YORK RSA 2 CELLULAR PARTNERSHIP",
+                "AT&T Mobility Wireless Operations Holdings Inc.",
+                "GTE MOBILNET OF TEXAS RSA #17 LIMITED PARTNERSHIP",
+                "CINGULAR WIRELESS OF TEXAS RSA #16 LIMITED PARTNERSHIP",
+                "OKLAHOMA RSA 3 LIMITED PARTNERSHIP",
+                "Tampnet USA LLC",
+            ].sort();
+
+            licensees.forEach((option) => {
+                const optionElement = document.createElement("option");
+                optionElement.textContent = option;
+
+                // Set the default option
+                if (option === "Verizon") {
+                    optionElement.selected = true;
+                }
+                dropdown.appendChild(optionElement);
+            });
+        </script>
+    </body>
+</html>
