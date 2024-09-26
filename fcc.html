@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Map with Geocoder</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 75px; bottom: 0; width: 100%; }
+#controls {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: white;
+    padding: 20px;
+    z-index: 1;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+#controls .shadcn-card-body {
+    display: flex;
+    flex-direction: column;
+}
+#controls .shadcn-input {
+    margin-bottom: 10px;
+}
+
+</style>
+</head>
+<body>
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+<div id="map"></div>
+
+<div id="controls">
+    <div class="shadcn-card-body">
+        <label for="underserved" class="shadcn-label">Underserved (Download/Upload):</label>
+        <input type="text" id="underserved" name="underserved" value="100/20" class="shadcn-input shadcn-input-filled" />
+        <label for="tech-codes" class="shadcn-label">Tech Codes:</label>
+        <input type="text" id="tech-codes" name="tech-codes" value="10,11,12,20,30,40,41,42,43,50" class="shadcn-input shadcn-input-filled" />
+        <label for="providers" class="shadcn-label">Providers:</label>
+        <input type="text" id="providers" name="providers" value="AT&T, Verizon, Xfinity" class="shadcn-input shadcn-input-filled" />
+        <button id="updateButton" class="shadcn-btn shadcn-btn-primary">Update</button>
+    </div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw';
+
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/standard',
+    center: [-95, 32],
+    zoom: 13
+});
+
+// Initialize the deck overlay
+let deckOverlay;
+
+function updateLayer(underserved, techCodes, providers) {
+    //&underserved=${underserved}&tech-codes=${techCodes}&providers=${providers}`;
+    let dataUrlParams = "";
+
+    if (underserved.trim() !== "") {
+    // Split the string by comma and trim whitespace around each item
+    const items = underserved.split('/').map(item => item.trim());
+    const intArray = items.map(item => parseInt(item, 10));
+    dataUrlParams = dataUrlParams + '&underserved=' + encodeURIComponent(JSON.stringify(intArray));
+    } else {
+    console.log("Input string is empty or only contains whitespace.");
+    }
+
+    if (techCodes.trim() !== "") {
+    // Split the string by comma and trim whitespace around each item
+    const items = techCodes.split(',').map(item => item.trim());
+    const intArray = items.map(item => parseInt(item, 10));
+    dataUrlParams = dataUrlParams + '&tech-codes=' + encodeURIComponent(JSON.stringify(intArray));
+    } else {
+      console.log("Input string is empty or only contains whitespace.");
+    }
+
+    if (providers.trim() !== "") {
+    // Split the string by comma and trim whitespace around each item
+    const items = providers.split(',').map(item => item.trim());
+    dataUrlParams = dataUrlParams + '&providers=' + encodeURIComponent(JSON.stringify(items));
+    } else {
+        console.log("Input string is empty or only contains whitespace.");
+    }
+    const dataUrl = 'https://www.fused.io/server/v1/realtime-shared/1bc84821d4cba96a038915280beb77cb14a38a20c99cd6b06ad7d7ad95d01fa0/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt' + dataUrlParams;
+    console.log(dataUrl);
+    map.getSource("fused-vector-source").setTiles([dataUrl]);
+
+}
+
+
+map.on('load', () => {
+    console.log('Map loaded');
+
+
+    map.addSource('fused-vector-source', {
+            'type': 'vector',
+            'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
+                'https://www.fused.io/server/v1/realtime-shared/1bc84821d4cba96a038915280beb77cb14a38a20c99cd6b06ad7d7ad95d01fa0/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
+            ],
+            'minzoom': 6,
+            'maxzoom': 14
+        });
+        map.addLayer({
+        'id': 'fused-vector-layer', // Layer ID
+        'type': 'fill',
+        'source': 'fused-vector-source', // ID of the tile source created above
+        'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
+        'layout': {
+        },
+        'paint': {
+            'fill-color': {property: 'r', stops: [
+                [0, 'rgba(0, 0, 0, 0.2)'],
+                [255, 'rgba(255, 0, 0, 0.2)']]},
+            'fill-outline-color':  {property: 'r', stops: [
+                [0, '#000000'],
+                [255, '#FF0000']]}
+        }
+    });
+        // When a click event occurs on a feature in the states layer,
+        // open a popup at the location of the click, with description
+        // HTML from the click event's properties.
+        map.on('click', 'fused-vector-layer', (e) => {
+            new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML('<h4>Providers</h4>' + e.features[0].properties.brands + '<h4>Max Download</h4>' + e.features[0].properties.max_down + '<h4>Max Upload</h4>' + e.features[0].properties.max_up)
+                .addTo(map);
+        });
+
+        // Change the cursor to a pointer when
+        // the mouse is over the states layer.
+        map.on('mouseenter', 'fused-vector-layer', () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        // Change the cursor back to a pointer
+        // when it leaves the states layer.
+        map.on('mouseleave', 'fused-vector-layer', () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+
+    map.addControl(new mapboxgl.NavigationControl());
+    console.log("Navigation control added");});
+
+    document.getElementById('updateButton').addEventListener('click', () => {
+        const underserved = document.getElementById('underserved').value;
+        const techCodes = document.getElementById('tech-codes').value;
+        const providers = document.getElementById('providers').value;
+        updateLayer(underserved, techCodes, providers);
+    });
+
+    // Add Geocoder control to the map
+    const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl
+    });
+
+    map.addControl(geocoder, 'top-right'); // Adding geocoder to top left corner
+
+    geocoder.on('result', (event) => {
+        const coordinates = event.result.center;
+        map.flyTo({
+            center: coordinates,
+            zoom: 12
+        });
+    
+    });
+
+
+</script>
+
+</body>
+</html>
