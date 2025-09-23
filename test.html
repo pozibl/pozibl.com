@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/deck.gl@^9.0.14/dist.min.js"></script>
+  </head>
+  <body>
+
+    <!-- Load the `mapbox-gl-geocoder` plugin. -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+    <div id="map" style="width: 100%; height: 100vh"></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZmhrIiwiYSI6ImNqczVveGNhdTAzanU0NG12NHF5anN0eG0ifQ.VKTajL9diCZk2afccGfbRw';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/dark-v10',
+        zoom: 2,
+        projection: 'globe',
+        center: [13, 52]
+    });
+
+    map.on('load', () => {
+        map.addSource('fused-vector-source', {
+            'type': 'vector',
+            'tiles': [ // Vector Tile URL that returns mvt (https://docs.mapbox.com/data/tilesets/guides/vector-tiles-standards/)
+                'https://www.fused.io/server/v1/realtime-shared/92cbf5d3c777938213e653b6d6327acde7042441a85feb2352b9e4c93c2930f1/run/tiles/{z}/{x}/{y}?dtype_out_vector=mvt'
+            ],
+            'minzoom': 11,
+            'maxzoom': 11
+        });
+        map.addLayer(
+            {
+                'id': 'fused-vector-layer', // Layer ID
+                'type': 'fill',
+                'source': 'fused-vector-source', // ID of the tile source created above
+                'source-layer': 'udf', // Important! The source-layer name is 'udf' for all Fused vector tiles
+                'layout': {
+                    'fill-sort-key': ['get', 'dist']
+                },
+                'paint': {
+                    'fill-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['get', 'dist'],
+                        0,
+                        '#F2F12D',
+                        500,
+                        '#EED322',
+                        1000,
+                        '#E6B71E',
+                        1500,
+                        '#DA9C20',
+                        2000,
+                        '#CA8323',
+                        2500,
+                        '#B86B25',
+                        3000,
+                        '#A25626',
+                        3500,
+                        '#8B4225',
+                        4000,
+                        '#723122'
+                    ],
+                    'fill-opacity': 0.75
+                }
+            }
+        );
+        map.addControl(new mapboxgl.NavigationControl());
+        console.log("Navigation control added");
+
+        // Add Geocoder control to the map
+        const geocoder = new MapboxGeocoder({
+          accessToken: mapboxgl.accessToken,
+          mapboxgl: mapboxgl
+        });
+        map.addControl(geocoder, 'top-left'); // Adding geocoder to top right corner
+
+        geocoder.on('result', (event) => {
+          const coordinates = event.result.center;
+          map.flyTo({
+            center: coordinates,
+            zoom: 11
+          });
+        });
+    })
+</script>
+
+</body>
+</html>
